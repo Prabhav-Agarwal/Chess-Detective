@@ -1,0 +1,31 @@
+{
+  "name": "chess-detective",
+  "version": "1.0.0",
+  "description": "A full-stack chess analysis platform for reviewing games, tracking move quality, accuracy, and Stockfish insights.",
+  "homepage": "https://github.com/Prabhav-Agarwal/Chess-Detective#readme",
+  "bugs": {
+    "url": "https://github.com/Prabhav-Agarwal/Chess-Detective/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prabhav-Agarwal/Chess-Detective.git"
+  },
+  "license": "MIT",
+  "author": "Prabhav Agarwal",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start" : "parcel landingPageController.js",
+    "build" : "parcel build landingPageController.js"
+  },
+  "allowScripts": {
+    "parcel@2.16.4": true,
+    "@parcel/watcher@2.6.0": true,
+    "@swc/core@1.16.2": true,
+    "lmdb@2.8.5": true,
+    "msgpackr-extract@3.0.4": true
+  },
+  "devDependencies": {
+    "parcel": "^2.16.4"
+  }
+}
