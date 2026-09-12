@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHESS DETECTIVE | FETCH GAMES</title>
+  </head>
+  <body>
+    <div class="fetch-games">
+
+      <!-- header -->
+      <header class="landing-page-header">
+        <div class="header-branding">
+          <span class="app-logo"><span>
+          <h1 class="app-title">Chess Detective</h1>
+        </div>
+        <div class="nav-bar">
+          <div class="nav-element"><a class="landing-page-link"   href="landingPage.html">Home</a></div>
+          <div class="nav-element"><a class="landing-page-link"   href="landingPage.html">Features</a></div>
+          <div class="nav-element"><a class="landing-page-link"   href="landingPage.html">About</a></div>
+        </div>
+      </header>
+
+      <!-- body -->
+      <main class="landing-page-body">
+        <!-- step indicator -->
+        <section class="body-step-indicator">
+          <div class="container">
+            <section class="step-indicator">
+              <div class="step step1 active">
+                <div class="step-icon">1</div>
+                <p>Platform</p>
+              </div>
+              <div class="indicator-line active"></div>
+              <div class="step step2">
+                <div class="step-icon">2</div>
+                <p>Usernames</p>
+              </div>
+              <div class="indicator-line"></div>
+              <div class="step step3">
+                <div class="step-icon">3</div>
+                <p>Fetch Games</p>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- body-slider -->
+        <section class="body-slider">
+
+          <!-- slider platform -->
+          <div class="slider-slide slider-platform">
+            <section class="slider-header platform-slider-header">
+              <div class="slider-header-head">Choose a Platform</div>
+              <div class="slider-header-subhead">Select the platform whose games you want to review</div>
+            </section>
+            <section class="platform-slider-body ">
+              <div class="choose-platform-btn chesscom-btn"  data-platform = "chesscom">
+                <img class="platform-logo chescom-logo" src="" alt="Chesscom Logo" />
+                <div>Chess.com</div>
+                <div>Analyze your Chess.com games</div>
+              </div>
+              <div class="choose-platform-btn lichess-btn"  data-platform = "lichess">
+                <img class="platform-logo lichess-logo"  src="" alt="Lichess-Logo" />
+                <div>Lichess</div>
+                <div>Analyze your Lichess games</div>
+              </div>
+            </section>
+            <footer class="silder-platform-footer">
+              <button class="change-slider-btn next-btn">Next <span><svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="4" y1="12" x2="18" y2="12" />
+                  <polyline points="12 6 18 12 12 18" /></svg></span>
+              </button>
+            </footer>
+          </div>
+
+          <div class="slider-slide slider-username">
+            <section class="slider-header username-slider-header">
+              <div class="slider-header-head">Enter Your Username</div>
+              <div class="slider-header-subhead">We will fetch your games from Chess.com </div>
+            </section>
+            <section class="username-slider-body ">
+              <div class="body-row change-platform-input">
+                <span class="platform-logo"></span>
+                <div>Chess.com <span class="change-platform-btn">Change</span><div>
+              </div>
+              <form action="#" class="body-row input-username-form" id="input-username-form">
+                <span class="person-svg"></span>
+                <input type="text" class="input-username" placeholder="Enter Username..." required>
+              </form>
+              <button class="body-row fetch-games-btn">Fetch Games</button>
+            </section>
+          </div>
+
+          <div class="slider-slide slider-games">
+            <section class="slider-header games-slider-header">
+              <div class="slider-header-head">Your Fetched Games</div>
+              <div class="slider-header-subhead">Your recent Chess.com games are ready to review<div>
+            </section>
+
+            <section class="games-slider-body">
+              <div class="games-slider-body-header">
+                <div class="col-head">DATE</div>
+                <div class="col-head">OPPONENT</div>
+                <div class="col-head">TIME CONTROL</div>
+                <div class="col-head">RESULT</div>
+                <div class="col-head">OPENING</div>
+                <div class="col-head">ACTION</div>
+              </div>
+              <div class="games-container">
+                <ul class="games-list">
+                  <li class="game-row">
+                    <div cell="cell date-cell">Sep 2, 2025</div>
+                    <div cell="cell opponent-cell">MagnusFan123</div>
+                    <div cell="cell time-control-cell">10+5</div>
+                    <div cell="cell result-cell"><div class="result win">Win</div></div>
+                    <div cell="cell opening-cell">Queen's Gambit</div>
+                    <div cell="cell action-cell"><a href="gameReview.html" class="review-btn">Review</a></div>
+                  </li>
+                  <li class="game-row">
+                    <div cell="cell date-cell">Sep 1, 2025</div>
+                    <div cell="cell opponent-cell">ChessMaster_99</div>
+                    <div cell="cell time-control-cell">5+3</div>
+                    <div cell="cell result-cell"><div class="result loss">Loss</div></div>
+                    <div cell="cell opening-cell">London Opening</div>
+                    <div cell="cell action-cell"><a href="gameReview.html" class="review-btn">Review</a></div>
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </div>
+
+          
+        </section>
+      </main>
+      
+    </div>
+  </body>
+</html>
