@@ -1,0 +1,837 @@
+/* ==========================================================================
+   CHESS DETECTIVE — FETCH GAMES
+   Matches the provided platform / username / fetch-games screens.
+   ========================================================================== */
+
+:root {
+  --bg: #f7f9fa;
+  --surface: #ffffff;
+  --surface-soft: #f4f6f7;
+  --surface-muted: #eef1f3;
+  --text: #11191d;
+  --text-secondary: #647078;
+  --text-tertiary: #8b959c;
+  --border: #e2e6e8;
+  --border-strong: #d7dddf;
+
+  --accent: #72a941;
+  --accent-dark: #147b58;
+  --accent-light: #edf6e8;
+
+  --danger: #df5b60;
+
+  --shadow-sm: 0 2px 8px rgba(17, 25, 29, 0.05);
+  --shadow-md: 0 8px 24px rgba(17, 25, 29, 0.08);
+
+  --font-main:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   RESET
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+
+.fetch-games {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+
+.fetch-games .landing-page-header {
+  width: 100%;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 max(40px, calc((100vw - 1240px) / 2));
+
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--border);
+
+  position: relative;
+  z-index: 10;
+}
+
+.fetch-games .header-branding {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.fetch-games .app-logo {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.fetch-games .app-logo svg {
+  width: 25px;
+  height: 25px;
+}
+
+.fetch-games .app-title {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
+.fetch-games .nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.fetch-games .nav-element {
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 550;
+}
+
+.fetch-games .landing-page-link {
+  transition: color 0.2s ease;
+}
+
+.fetch-games .landing-page-link:hover {
+  color: var(--text);
+}
+
+/* ==========================================================================
+   MAIN BODY
+   ========================================================================== */
+
+.fetch-games .landing-page-body {
+  width: min(100%, 1200px);
+  min-height: calc(100vh - 90px);
+
+  margin: 0 auto;
+  padding: 52px 32px 70px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ==========================================================================
+   STEP INDICATOR
+   ========================================================================== */
+
+.body-step-indicator {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 92px;
+}
+
+.body-step-indicator .container {
+  width: min(100%, 620px);
+  margin: 0 auto;
+}
+
+.step-indicator {
+  width: 100%;
+
+  display: flex;
+  align-items: flex-start;
+
+  padding: 0;
+}
+
+.step {
+  min-width: 86px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  position: relative;
+  z-index: 2;
+}
+
+.step-icon {
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e9edef;
+  color: #778189;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+.step.active .step-icon {
+  background: var(--accent-dark);
+  color: #ffffff;
+}
+
+.step p {
+  position: absolute;
+  top: 38px;
+
+  width: max-content;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+
+  text-align: center;
+  white-space: nowrap;
+}
+
+.step.active p {
+  color: var(--text);
+}
+
+.indicator-line {
+  flex: 1;
+  height: 2px;
+
+  margin-top: 14px;
+
+  background: #e2e7e9;
+}
+
+.indicator-line.active {
+  background: var(--accent-dark);
+}
+
+/* ==========================================================================
+   SLIDER
+   ========================================================================== */
+
+.body-slider {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.slider-slide {
+  width: 100%;
+  display: none;
+}
+
+.slider-slide.active,
+.slider-slide:first-child {
+  display: block;
+}
+
+/*
+  If your JS already adds/removes a class for the current slide,
+  use .active on the selected .slider-slide.
+*/
+
+.body-slider .slider-slide:not(.active) {
+  /* Remove this rule if your JS uses another visibility system. */
+}
+
+/* ==========================================================================
+   SLIDER HEADERS
+   ========================================================================== */
+
+.slider-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+.slider-header-head {
+  color: var(--text);
+  font-size: 34px;
+  line-height: 1.15;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.slider-header-subhead {
+  margin-top: 8px;
+
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   PLATFORM SLIDE
+   ========================================================================== */
+
+.platform-slider-body {
+  width: min(100%, 850px);
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+
+  margin: 0 auto;
+}
+
+.choose-platform-btn {
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  padding: 28px 24px;
+
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+
+  box-shadow: var(--shadow-sm);
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.choose-platform-btn:hover {
+  border-color: #a9c68e;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.choose-platform-btn.selected,
+.choose-platform-btn.active {
+  border-color: var(--accent-dark);
+  box-shadow: 0 0 0 1px rgba(20, 123, 88, 0.12);
+}
+
+/* selected checkmark — no HTML change needed */
+.choose-platform-btn.selected::after,
+.choose-platform-btn.active::after {
+  content: "✓";
+
+  position: absolute;
+  top: 13px;
+  right: 13px;
+
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--accent-dark);
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.platform-logo {
+  width: 70px;
+  height: 70px;
+
+  object-fit: contain;
+
+  margin-bottom: 14px;
+}
+
+.choose-platform-btn > div:nth-of-type(1) {
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.choose-platform-btn > div:nth-of-type(2) {
+  margin-top: 5px;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   PLATFORM FOOTER
+   ========================================================================== */
+
+.silder-platform-footer {
+  width: min(100%, 850px);
+
+  display: flex;
+  justify-content: flex-end;
+
+  margin: 22px auto 0;
+}
+
+.change-slider-btn,
+.fetch-games-btn {
+  height: 48px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 28px;
+
+  border-radius: 8px;
+
+  background: #111c20;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.change-slider-btn:hover,
+.fetch-games-btn:hover {
+  background: #1d2b30;
+  transform: translateY(-1px);
+}
+
+.change-slider-btn svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* ==========================================================================
+   USERNAME SLIDE
+   ========================================================================== */
+
+.username-slider-body {
+  width: min(100%, 700px);
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.body-row {
+  width: 100%;
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  box-shadow: var(--shadow-sm);
+}
+
+.change-platform-input {
+  padding: 0 16px;
+  gap: 12px;
+
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.change-platform-input .platform-logo {
+  width: 27px;
+  height: 27px;
+  margin: 0;
+}
+
+.change-platform-btn {
+  float: right;
+
+  color: var(--accent-dark);
+  font-size: 13px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.input-username-form {
+  padding: 0 14px;
+}
+
+.person-svg {
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+
+  margin-right: 10px;
+
+  position: relative;
+}
+
+/* Simple person icon generated entirely with CSS */
+.person-svg::before {
+  content: "";
+
+  position: absolute;
+  top: 1px;
+  left: 7px;
+
+  width: 7px;
+  height: 7px;
+
+  border: 1.6px solid var(--text);
+  border-radius: 50%;
+}
+
+.person-svg::after {
+  content: "";
+
+  position: absolute;
+  bottom: 1px;
+  left: 3px;
+
+  width: 15px;
+  height: 8px;
+
+  border: 1.6px solid var(--text);
+  border-radius: 9px 9px 4px 4px;
+}
+
+.input-username {
+  width: 100%;
+  height: 46px;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--text);
+  font-size: 14px;
+}
+
+.input-username::placeholder {
+  color: var(--text-secondary);
+}
+
+.fetch-games-btn {
+  width: 100%;
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   GAMES SLIDE
+   ========================================================================== */
+
+.games-slider-header {
+  margin-bottom: 34px;
+}
+
+.games-slider-body {
+  width: 100%;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  box-shadow: 0 5px 14px rgba(17, 25, 29, 0.08);
+}
+
+.games-slider-body-header,
+.game-row {
+  display: grid;
+  grid-template-columns:
+    1.05fr
+    1.45fr
+    1.15fr
+    0.8fr
+    1.5fr
+    0.75fr;
+
+  align-items: center;
+}
+
+.games-slider-body-header {
+  min-height: 50px;
+  padding: 0 24px;
+
+  background: #e9edf1;
+
+  color: #59666e;
+
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+}
+
+.games-container {
+  width: 100%;
+}
+
+.games-list {
+  list-style: none;
+}
+
+.game-row {
+  min-height: 81px;
+
+  padding: 0 24px;
+
+  border-top: 1px solid var(--border);
+
+  color: var(--text);
+  font-size: 14px;
+}
+
+.game-row > div {
+  min-width: 0;
+}
+
+.opponent-cell {
+  font-weight: 650;
+}
+
+.time-control-cell,
+.opening-cell {
+  color: var(--text-secondary);
+}
+
+.result {
+  width: max-content;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 48px;
+  height: 28px;
+
+  padding: 0 12px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.result.win {
+  background: #dcebcf;
+  color: #326a1b;
+}
+
+.result.loss {
+  background: #f2d5d5;
+  color: #a72f34;
+}
+
+.result.draw {
+  background: #eef1f2;
+  color: #445058;
+}
+
+.action-cell {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.review-btn {
+  min-width: 82px;
+  height: 46px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background: var(--accent);
+  color: #16200f;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.review-btn:hover {
+  background: #81b951;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .fetch-games .landing-page-header {
+    padding: 0 28px;
+  }
+
+  .fetch-games .landing-page-body {
+    padding: 42px 24px 60px;
+  }
+
+  .platform-slider-body {
+    width: 100%;
+  }
+
+  .games-slider-body {
+    overflow-x: auto;
+  }
+
+  .games-slider-body-header,
+  .game-row {
+    min-width: 850px;
+  }
+}
+
+@media (max-width: 650px) {
+  .fetch-games .landing-page-header {
+    height: 76px;
+    padding: 0 18px;
+  }
+
+  .fetch-games .app-title {
+    font-size: 19px;
+  }
+
+  .fetch-games .app-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .fetch-games .nav-bar {
+    display: none;
+  }
+
+  .fetch-games .landing-page-body {
+    min-height: calc(100vh - 76px);
+    padding: 30px 16px 50px;
+  }
+
+  .body-step-indicator {
+    margin-bottom: 76px;
+  }
+
+  .body-step-indicator .container {
+    width: 100%;
+  }
+
+  .step {
+    min-width: 70px;
+  }
+
+  .step p {
+    font-size: 11px;
+  }
+
+  .slider-header-head {
+    font-size: 28px;
+  }
+
+  .slider-header-subhead {
+    font-size: 14px;
+  }
+
+  .platform-slider-body {
+    grid-template-columns: 1fr;
+  }
+
+  .choose-platform-btn {
+    min-height: 170px;
+  }
+
+  .silder-platform-footer {
+    margin-top: 18px;
+  }
+
+  .username-slider-body {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .step {
+    min-width: 55px;
+  }
+
+  .step-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .step p {
+    font-size: 10px;
+  }
+
+  .indicator-line {
+    margin-top: 13px;
+  }
+
+  .slider-header-head {
+    font-size: 25px;
+  }
+}
