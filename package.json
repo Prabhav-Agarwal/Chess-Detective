@@ -13,10 +13,9 @@
   "license": "MIT",
   "author": "Prabhav Agarwal",
   "type": "module",
-  "main": "index.js",
   "scripts": {
-    "start" : "parcel landingPageController.js",
-    "build" : "parcel build landingPageController.js"
+    "start": "parcel landingPage.html",
+    "build": "parcel build landingPageController.js"
   },
   "allowScripts": {
     "parcel@2.16.4": true,
@@ -24,6 +23,10 @@
     "@swc/core@1.16.2": true,
     "lmdb@2.8.5": true,
     "msgpackr-extract@3.0.4": true
+  },
+  "dependencies": {
+    "chess.js": "^1.4.0",
+    "chessboard-element": "^1.2.0"
   },
   "devDependencies": {
     "parcel": "^2.16.4"
