@@ -1,4 +1,6 @@
 import * as gameModel from "../models/gameModel.js";
+import stockfishService from "../services/stockfishService.js";
+import Stockfish from "../services/stockfishService.js";
 
 const gamePGN = `[Event "Live Chess"]
 [Site "Chess.com"]
@@ -27,4 +29,17 @@ const controlGame = function () {
   console.log(gameModel.game);
 };
 
-controlGame();
+const controlMoveInfo = async function () {
+  for (let move of gameModel.game.gameMoves.slice(1, 5)) {
+    await stockfishService.analysePosition(move.after);
+  }
+
+  console.log(gameModel.game);
+};
+const init = function () {
+  controlGame();
+  Stockfish.addHandlerExtractPosAnalysis(gameModel.addPosAnalysis);
+  controlMoveInfo();
+};
+
+init();

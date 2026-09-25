@@ -2,9 +2,10 @@ import { Chess } from "chess.js";
 
 //object for maintaining state of game
 export const game = {
-  chessGame: "",
+  chessGame: null,
   gamePgn: "",
   gameMoves: [],
+  posAnalysis: [],
 };
 
 //function for starting a new chess game
@@ -13,4 +14,9 @@ export const startGame = function (pgn) {
   game.chessGame = new Chess();
   game.chessGame.loadPgn(game.gamePgn);
   game.gameMoves = game.chessGame.history({ verbose: true });
+};
+
+export const addPosAnalysis = function (posAnalysis, fen) {
+  // game.gameMoves.find((move) => move.after === fen).posAnalysis = posAnalysis;
+  game.posAnalysis = posAnalysis;
 };
