@@ -15,8 +15,3 @@ export const startGame = function (pgn) {
   game.chessGame.loadPgn(game.gamePgn);
   game.gameMoves = game.chessGame.history({ verbose: true });
 };
-
-export const addPosAnalysis = function (posAnalysis, fen) {
-  // game.gameMoves.find((move) => move.after === fen).posAnalysis = posAnalysis;
-  game.posAnalysis = posAnalysis;
-};
