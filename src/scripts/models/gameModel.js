@@ -5,7 +5,6 @@ export const game = {
   chessGame: null,
   gamePgn: "",
   gameMoves: [],
-  posAnalysis: [],
 };
 
 //function for starting a new chess game

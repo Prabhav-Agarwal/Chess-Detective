@@ -1,5 +1,6 @@
 import * as gameModel from "../models/gameModel.js";
 import Stockfish from "../services/stockfishService.js";
+import { calculateStats } from "../services/calcStatsService.js";
 
 const gamePGN = `[Event "Live Chess"]
 [Site "Chess.com"]
@@ -56,13 +57,14 @@ Nxd5 9. a3 c5 10. Qc2 Nd7 $2 11. Bxh7+ Kh8 12. Be4 Rc8 13. Bd2 $6 cxd4 14. Nxd4
 Ba6 $2 15. Bd3 $9 Bb7 16. Qd1 Nc5 $4 17. Qh5+ $1 1-0`;
 
 const controlGame = function () {
-  gameModel.startGame(gamePGN2);
+  gameModel.startGame(gamePGN);
   console.log(gameModel.game);
 };
 
-const init = function () {
+const init = async function () {
   controlGame();
-  Stockfish.getGameEngineAnalysis();
+  await Stockfish.getGameEngineAnalysis();
+  calculateStats();
 };
 
 init();
