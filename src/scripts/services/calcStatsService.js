@@ -3,18 +3,16 @@ import * as gameModel from "../models/gameModel.js";
 import { standardDeviation } from "../helpers.js";
 import { harmonicMean } from "../helpers.js";
 import { weightedMean } from "../helpers.js";
-import { cpForMate } from "../helpers.js";
-import { effectiveCp } from "../helpers.js";
-import { INIT_CP } from "../config.js";
+import { whitePerspectiveCp } from "../helpers.js";
+import { INIT_CP, CP_CLAMP } from "../config.js";
 
 //Function for calculating win percentage from the prespective of white
 const centiPawnsToWinPercentage = function (centiPawns) {
+  if (!Number.isFinite(centiPawns)) return null; // null / undefined / NaN -> null
   const MULTIPLIER = -0.00368208;
-
-  const winningChances =
-    2 / (1 + Math.exp(MULTIPLIER * Math.ceil(centiPawns))) - 1;
-
-  return 50 + 50 * Math.max(-1, Math.min(1, winningChances));
+  const clamped = Math.max(-CP_CLAMP, Math.min(CP_CLAMP, centiPawns));
+  const winningChances = 2 / (1 + Math.exp(MULTIPLIER * clamped)) - 1;
+  return 50 + 50 * winningChances;
 };
 
 //Function for calculating accuracy percentage of a move by taking win percentqage of position before and after.
@@ -30,13 +28,16 @@ const accuracyPercentage = function (before, after) {
   return Math.max(0, Math.min(100, raw + 1));
 };
 
-//Function for calculating expectedPoints from winPercentages (from white's prespective)
-const calcExpectedPoints = function (winPercentageArr) {
+//Function for calculating expectedPoints from winPercentages (from mover's prespective)
+const calcExpectedScore = function (winPercentageArr, moves) {
   const winPercentageInit = centiPawnsToWinPercentage(INIT_CP);
 
-  return winPercentageArr.map((currWinPercentage, i, arr) => {
-    if (i === 0) return (winPercentageInit - currWinPercentage) / 100;
-    return (arr[i - 1] - currWinPercentage) / 100;
+  return winPercentageArr.map((after, i, arr) => {
+    const before = i === 0 ? winPercentageInit : arr[i - 1];
+    if (before == null || after == null) return null;
+    // Win% is White's perspective:
+    // White loses (before - after), Black loses (after - before)
+    return (moves[i].color === "w" ? before - after : after - before) / 100;
   });
 };
 
@@ -63,22 +64,18 @@ const calculateGameAccuracy = function (cps, startColor = "white") {
   // Evaluations are expected to be from White's perspective.
   const allWinPercentages = [
     centiPawnsToWinPercentage(INIT_CP),
-    ...cps.map((cp) => (cp == null ? null : centiPawnsToWinPercentage(cp))),
+    ...cps.map((cp) => centiPawnsToWinPercentage(cp)), // returns null for null/NaN now
   ];
 
-  const windowSize = clamp(Math.floor(cps.length / 10), 2, 8);
-
-  const initialWindow = allWinPercentages.slice(0, windowSize);
+  const windowSize = clamp(Math.floor(allWinPercentages.length / 10), 2, 8);
 
   const repeatedWindowCount =
     Math.min(windowSize, allWinPercentages.length) - 2;
 
   const weights = [];
   for (let i = 0; i < cps.length; i++) {
-    const window =
-      i < repeatedWindowCount
-        ? initialWindow
-        : allWinPercentages.slice(i, i + windowSize);
+    const start = Math.max(0, i - repeatedWindowCount);
+    const window = allWinPercentages.slice(start, start + windowSize);
 
     weights.push(
       window.some((value) => value == null)
@@ -143,24 +140,29 @@ const calculateGameAccuracy = function (cps, startColor = "white") {
 
 ////////////////////////////
 export const calculateStats = function () {
-  gameModel.game.centiPawnsArr = gameModel.game.gameMoves.map((move) => {
-    if (move.posAnalysis.engineLines.line1.mate) {
-      return cpForMate(move);
-    }
+  const game = gameModel.game;
+  game.centiPawnsArr = {};
+  game.winPercentagesArr = {};
+  game.expectedScoresArr = {};
 
-    return effectiveCp(move);
+  ["line1", "line2"].forEach((line) => {
+    game.centiPawnsArr[line] = game.gameMoves.map((move, i, moves) =>
+      whitePerspectiveCp(move, line, i === moves.length - 1),
+    );
+
+    game.winPercentagesArr[line] = game.centiPawnsArr[line].map((cpValue) =>
+      centiPawnsToWinPercentage(cpValue),
+    );
+
+    gameModel.game.expectedScoresArr[line] = calcExpectedScore(
+      gameModel.game.winPercentagesArr[line],
+      gameModel.game.gameMoves,
+    );
   });
 
-  gameModel.game.winPercentagesArr = gameModel.game.centiPawnsArr.map(
-    (cpValue) => centiPawnsToWinPercentage(cpValue),
-  );
-
-  gameModel.game.expectedPointsArr = calcExpectedPoints(
-    gameModel.game.winPercentagesArr,
-  );
-
   gameModel.game.playerAccuracies = calculateGameAccuracy(
-    gameModel.game.centiPawnsArr,
+    game.centiPawnsArr["line1"],
+    game.gameMoves[0]?.color === "b" ? "black" : "white",
   );
 
   console.log(gameModel.game);

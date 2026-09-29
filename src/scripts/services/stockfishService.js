@@ -1,3 +1,4 @@
+import { SEARCH_DEPTH } from "../config.js";
 import * as gameModel from "../models/gameModel.js";
 
 class Stockfish {
@@ -20,11 +21,13 @@ class Stockfish {
   //function for extracting info about line of engine
   #extractEngineLineInfo(lineNum, message, posAnalysis) {
     if (
-      message.startsWith("info depth 15") &&
-      message.includes(`multipv ${lineNum}`)
+      message.startsWith(`info depth ${SEARCH_DEPTH}`) &&
+      message.includes(`multipv ${lineNum}`) &&
+      !message.includes("lowerbound") &&
+      !message.includes("upperbound")
     ) {
-      const cpMatch = message.match(/cp\s+(-?\d+)/);
-      const mateMatch = message.match(/mate\s+(-?\d+)/);
+      const cpMatch = message.match(/score cp (-?\d+)/);
+      const mateMatch = message.match(/score mate (-?\d+)/);
       const pvMatch = message.match(/\bpv\s+(.+)/)?.[1];
 
       posAnalysis.engineLines[`line${lineNum}`] = {
@@ -41,7 +44,7 @@ class Stockfish {
     const posAnalysis = { engineLines: {} };
     return new Promise((resolve, reject) => {
       this.#stockfish.postMessage(`position fen ${fen}`);
-      this.#stockfish.postMessage("go depth 15");
+      this.#stockfish.postMessage(`go depth ${SEARCH_DEPTH}`);
 
       this.#stockfish.onmessage = (event) => {
         const message = event.data;

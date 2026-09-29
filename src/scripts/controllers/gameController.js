@@ -1,7 +1,8 @@
 import * as gameModel from "../models/gameModel.js";
 import Stockfish from "../services/stockfishService.js";
 import { calculateStats } from "../services/calcStatsService.js";
-
+import { classifyMoves } from "../services/classifyMovesService.js";
+const posFEN = `r3kb1r/5p1p/5p2/1pPP1P2/p1n5/P4B2/2P1KPPP/R1B4R b kq - 0 19`;
 const gamePGN = `[Event "Live Chess"]
 [Site "Chess.com"]
 [Date "2026.08.28"]
@@ -56,8 +57,30 @@ const gamePGN2 = `[Event "Live Chess"]
 Nxd5 9. a3 c5 10. Qc2 Nd7 $2 11. Bxh7+ Kh8 12. Be4 Rc8 13. Bd2 $6 cxd4 14. Nxd4
 Ba6 $2 15. Bd3 $9 Bb7 16. Qd1 Nc5 $4 17. Qh5+ $1 1-0`;
 
+const gamePGN3 = `[Event "Rated blitz game"]
+[Site "https://lichess.org/KnEtTnei"]
+[Date "2024.05.20"]
+[Round "?"]
+[White "rashkakaput"]
+[Black "prabhavagarwal8"]
+[Result "0-1"]
+[WhiteElo "1498"]
+[BlackElo "1500"]
+[ECO "B10"]
+[Termination "Normal"]
+[TimeControl "300+0"]
+[Link "https://www.chess.com/analysis/collection/brilliant-3B1h14jNN/47K1UwLW3x/games?move=48"]
+
+1. e4 c6 2. Bc4 $6 {B10 Caro-Kann Defense: Hillbilly Attack} 2... d5 3. exd5 cxd5
+4. Bb5+ Nc6 5. Bxc6+ bxc6 6. d4 Bf5 7. h3 e6 8. Nf3 Bd6 9. Be3 $6 Ne7 10. c3 $6
+Bg6 $2 11. O-O Nf5 12. Bg5 $6 f6 13. Bd2 h5 $6 14. Re1 $6 Bh7 $2 15. Rxe6+ $9 Kf7 $1 16.
+Re1 g5 $1 17. g3 g4 18. hxg4 hxg4 19. Nh2 $6 Qc7 20. Qxg4 $6 Rag8 21. Qh5+ $6 Bg6 $1
+22. Qe2 Rxh2 $6 (22... Nxg3) (22... Nxd4 23. cxd4 Be4) 23. Qe6+ $6 Kg7 $1 24. Kxh2
+Bxg3+ $3 25. Kg2 Bxf2 $3 26. Kxf2 $2 Qg3+ $9 (26... Qh2+ 27. Kf3) 27. Kf1 Ne3+ $9 28.
+Bxe3 $9 Bd3+ $9 29. Re2 Qf3+ 30. Ke1 $4 Qxe2# {Black wins by checkmate.} 0-1`;
+
 const controlGame = function () {
-  gameModel.startGame(gamePGN);
+  gameModel.startGame(gamePGN3);
   console.log(gameModel.game);
 };
 
@@ -65,6 +88,7 @@ const init = async function () {
   controlGame();
   await Stockfish.getGameEngineAnalysis();
   calculateStats();
+  classifyMoves();
 };
 
 init();
