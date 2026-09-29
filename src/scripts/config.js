@@ -50,6 +50,12 @@ export const PEICE_VALUES = {
   q: 9,
 };
 
+//Images src
+export const CHESSCOM_LOGO_SRC =
+  "https://img.icons8.com/color/48/chess-com.png";
+export const LICHESS_LOGO_SRC =
+  "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Lichess_Logo_2019.svg/1280px-Lichess_Logo_2019.svg.png?utm_source=en.wikipedia.org&utm_campaign=index&utm_content=thumbnail";
+
 ////API CONFIGURATIONS
-// export const LICHESS_GAMES_REQUEST_URL = `https://lichess.org/api/games/user/${username}`;
-// export const CHESSCOM_GAMES_REQUEST_URL = `https://api.chess.com/pub/player/${username}/games/archives`;
+export const LICHESS_GAMES_REQUEST_URL = `https://lichess.org/api/games/user/`;
+export const CHESSCOM_GAMES_REQUEST_URL = `https://api.chess.com/pub/player/`;

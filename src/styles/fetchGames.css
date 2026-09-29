@@ -1,26 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
 /* ==========================================================================
    CHESS DETECTIVE — FETCH GAMES
-   Matches the provided platform / username / fetch-games screens.
+   Slides: 1) Platform  2) Username  3) Fetched games
    ========================================================================== */
 
 :root {
   --bg: #f7f9fa;
   --surface: #ffffff;
-  --surface-soft: #f4f6f7;
-  --surface-muted: #eef1f3;
+  --surface-hover: #fafbfb;
   --text: #11191d;
   --text-secondary: #647078;
-  --text-tertiary: #8b959c;
-  --border: #e2e6e8;
-  --border-strong: #d7dddf;
+  --border: #e4e8ea;
+  --border-strong: #d3dadd;
 
-  --accent: #72a941;
-  --accent-dark: #147b58;
-  --accent-light: #edf6e8;
+  --ink: #0f191c; /* dark buttons */
+  --ink-hover: #1c2a2f;
 
+  --accent: #72a941; /* Review button / Win pill */
+  --accent-hover: #81b951;
+  --accent-dark: #147b58; /* active step, selected card, links */
   --danger: #df5b60;
 
-  --shadow-sm: 0 2px 8px rgba(17, 25, 29, 0.05);
+  --shadow-sm:
+    0 1px 3px rgba(17, 25, 29, 0.05), 0 2px 8px rgba(17, 25, 29, 0.04);
   --shadow-md: 0 8px 24px rgba(17, 25, 29, 0.08);
 
   --font-main:
@@ -65,9 +68,10 @@ a {
   text-decoration: none;
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 2px;
+}
 
 .fetch-games {
   width: 100%;
@@ -79,70 +83,68 @@ a {
    HEADER
    ========================================================================== */
 
-.fetch-games .landing-page-header {
+.landing-page-header {
   width: 100%;
-  height: 90px;
+  height: 76px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 max(40px, calc((100vw - 1240px) / 2));
+  padding: 0 max(32px, calc((100vw - 1200px) / 2));
 
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid var(--border);
 
   position: relative;
   z-index: 10;
 }
 
-.fetch-games .header-branding {
+.header-branding {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 10px;
 }
 
-.fetch-games .app-logo {
-  width: 42px;
-  height: 42px;
+/* plain knight mark, no coloured circle */
+.app-logo {
+  width: 30px;
+  height: 30px;
 
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 50%;
-  background: var(--accent);
 }
 
-.fetch-games .app-logo svg {
-  width: 25px;
-  height: 25px;
+.app-logo svg {
+  width: 26px;
+  height: 26px;
 }
 
-.fetch-games .app-title {
-  font-size: 22px;
-  font-weight: 750;
-  letter-spacing: -0.025em;
+.app-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 
-.fetch-games .nav-bar {
+.nav-bar {
   display: flex;
   align-items: center;
   gap: 32px;
 }
 
-.fetch-games .nav-element {
+.nav-element {
   color: var(--text-secondary);
   font-size: 15px;
-  font-weight: 550;
+  font-weight: 500;
 }
 
-.fetch-games .landing-page-link {
+.landing-page-link {
   transition: color 0.2s ease;
 }
 
-.fetch-games .landing-page-link:hover {
+.landing-page-link:hover {
   color: var(--text);
 }
 
@@ -150,12 +152,12 @@ a {
    MAIN BODY
    ========================================================================== */
 
-.fetch-games .landing-page-body {
+.landing-page-body {
   width: min(100%, 1200px);
-  min-height: calc(100vh - 90px);
+  min-height: calc(100vh - 76px);
 
   margin: 0 auto;
-  padding: 52px 32px 70px;
+  padding: 48px 32px 80px;
 
   display: flex;
   flex-direction: column;
@@ -163,39 +165,32 @@ a {
 }
 
 /* ==========================================================================
-   STEP INDICATOR
+   STEP INDICATOR  (label sits to the right of each circle)
    ========================================================================== */
 
 .body-step-indicator {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 92px;
+  margin-bottom: 64px;
 }
 
 .body-step-indicator .container {
-  width: min(100%, 620px);
+  width: min(100%, 640px);
   margin: 0 auto;
 }
 
 .step-indicator {
   width: 100%;
-
   display: flex;
-  align-items: flex-start;
-
-  padding: 0;
+  align-items: center;
 }
 
 .step {
-  min-width: 86px;
-
   display: flex;
-  flex-direction: column;
   align-items: center;
-
-  position: relative;
-  z-index: 2;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .step-icon {
@@ -207,50 +202,51 @@ a {
   justify-content: center;
 
   border-radius: 50%;
-
-  background: #e9edef;
+  background: #e8ecee;
   color: #778189;
 
   font-size: 13px;
   font-weight: 700;
-
   line-height: 1;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
 }
 
-.step.active .step-icon {
+.step p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.step.active .step-icon,
+.step.completed .step-icon {
   background: var(--accent-dark);
   color: #ffffff;
 }
 
-.step p {
-  position: absolute;
-  top: 38px;
-
-  width: max-content;
-
-  color: var(--text-secondary);
-  font-size: 13px;
-  font-weight: 600;
-
-  text-align: center;
-  white-space: nowrap;
-}
-
-.step.active p {
+.step.active p,
+.step.completed p {
   color: var(--text);
+  font-weight: 600;
 }
 
 .indicator-line {
   flex: 1;
+  min-width: 24px;
   height: 2px;
 
-  margin-top: 14px;
+  margin: 0 14px;
+  border-radius: 2px;
 
   background: #e2e7e9;
+  transition: background 0.25s ease;
 }
 
 .indicator-line.active {
-  background: var(--accent-dark);
+  background: #8fc4a9;
 }
 
 /* ==========================================================================
@@ -268,62 +264,115 @@ a {
   display: none;
 }
 
+/* Add .active to the current slide in JS.
+   If no slide has it yet, the first slide is shown. */
 .slider-slide.active,
-.slider-slide:first-child {
+.body-slider:not(:has(.slider-slide.active)) .slider-slide:first-child {
   display: block;
+  animation: slide-in 0.3s ease both;
 }
 
-/*
-  If your JS already adds/removes a class for the current slide,
-  use .active on the selected .slider-slide.
-*/
-
-.body-slider .slider-slide:not(.active) {
-  /* Remove this rule if your JS uses another visibility system. */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
-
-/* ==========================================================================
-   SLIDER HEADERS
-   ========================================================================== */
 
 .slider-header {
   width: 100%;
   text-align: center;
-  margin-bottom: 34px;
+  margin-bottom: 36px;
 }
 
 .slider-header-head {
   color: var(--text);
-  font-size: 34px;
+  font-size: 36px;
   line-height: 1.15;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: -0.035em;
 }
 
 .slider-header-subhead {
-  margin-top: 8px;
-
+  margin-top: 10px;
   color: var(--text-secondary);
   font-size: 16px;
   line-height: 1.5;
 }
 
 /* ==========================================================================
-   PLATFORM SLIDE
+   SHARED BUTTON  (Next / Fetch Games)
+   ========================================================================== */
+
+.change-slider-btn {
+  height: 50px;
+  min-width: 148px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 0 28px;
+
+  border-radius: 10px;
+  background: var(--ink);
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.change-slider-btn > span {
+  display: inline-flex;
+}
+
+.change-slider-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.change-slider-btn:hover {
+  background: var(--ink-hover);
+  transform: translateY(-1px);
+}
+
+.change-slider-btn:active {
+  transform: translateY(0);
+}
+
+.change-slider-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ==========================================================================
+   SLIDE 1 — PLATFORM
    ========================================================================== */
 
 .platform-slider-body {
-  width: min(100%, 850px);
+  width: min(100%, 820px);
+  margin: 0 auto;
 
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-
-  margin: 0 auto;
+  gap: 20px;
 }
 
 .choose-platform-btn {
-  min-height: 190px;
+  min-height: 224px;
 
   display: flex;
   flex-direction: column;
@@ -331,13 +380,11 @@ a {
   justify-content: center;
 
   position: relative;
-
-  padding: 28px 24px;
+  padding: 32px 24px;
 
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: 9px;
-
+  border-radius: 12px;
   box-shadow: var(--shadow-sm);
 
   cursor: pointer;
@@ -349,118 +396,72 @@ a {
 }
 
 .choose-platform-btn:hover {
-  border-color: #a9c68e;
+  border-color: var(--border-strong);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
 .choose-platform-btn.selected,
 .choose-platform-btn.active {
-  border-color: var(--accent-dark);
-  box-shadow: 0 0 0 1px rgba(20, 123, 88, 0.12);
+  border-color: #6fb08f;
+  box-shadow: 0 0 0 3px rgba(20, 123, 88, 0.08);
 }
 
-/* selected checkmark — no HTML change needed */
+/* green tick badge, top-right of the selected card */
 .choose-platform-btn.selected::after,
 .choose-platform-btn.active::after {
   content: "✓";
 
   position: absolute;
-  top: 13px;
-  right: 13px;
+  top: 14px;
+  right: 14px;
 
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
-
   background: var(--accent-dark);
   color: #ffffff;
 
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
 }
 
-.platform-logo {
-  width: 70px;
-  height: 70px;
-
+.choose-platform-btn .platform-logo {
+  width: 88px;
+  height: 88px;
   object-fit: contain;
-
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
+/* nth-of-type counts <div>s only: 1st = name, 2nd = description */
 .choose-platform-btn > div:nth-of-type(1) {
   color: var(--text);
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 750;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
 }
 
 .choose-platform-btn > div:nth-of-type(2) {
-  margin-top: 5px;
-
+  margin-top: 8px;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 15px;
 }
 
-/* ==========================================================================
-   PLATFORM FOOTER
-   ========================================================================== */
-
 .silder-platform-footer {
-  width: min(100%, 850px);
+  width: min(100%, 820px);
+  margin: 24px auto 0;
 
   display: flex;
   justify-content: flex-end;
-
-  margin: 22px auto 0;
-}
-
-.change-slider-btn,
-.fetch-games-btn {
-  height: 48px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  padding: 0 28px;
-
-  border-radius: 8px;
-
-  background: #111c20;
-  color: #ffffff;
-
-  font-size: 14px;
-  font-weight: 650;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-
-.change-slider-btn:hover,
-.fetch-games-btn:hover {
-  background: #1d2b30;
-  transform: translateY(-1px);
-}
-
-.change-slider-btn svg {
-  width: 19px;
-  height: 19px;
 }
 
 /* ==========================================================================
-   USERNAME SLIDE
+   SLIDE 2 — USERNAME
    ========================================================================== */
 
 .username-slider-body {
@@ -474,158 +475,197 @@ a {
 
 .body-row {
   width: 100%;
-  min-height: 48px;
+  min-height: 60px;
 
   display: flex;
   align-items: center;
+  gap: 14px;
+
+  padding: 0 20px;
 
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
-
+  border-radius: 12px;
   box-shadow: var(--shadow-sm);
 }
 
-.change-platform-input {
-  padding: 0 16px;
-  gap: 12px;
+/* selected platform row: logo | name ........ Change */
+.change-platform-input .platform-logo {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
 
-  color: var(--text);
-  font-size: 14px;
-  font-weight: 650;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* works whether JS injects an <img> or sets a background-image */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-.change-platform-input .platform-logo {
-  width: 27px;
-  height: 27px;
-  margin: 0;
+.change-platform-input .platform-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.change-platform-input > span:first-child {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.platform-logo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.change-platform-input > div {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .change-platform-btn {
-  float: right;
-
   color: var(--accent-dark);
-  font-size: 13px;
-  font-weight: 650;
-
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
   cursor: pointer;
 }
 
+.change-platform-btn:hover {
+  text-decoration: underline;
+}
+
+/* username input row */
 .input-username-form {
-  padding: 0 14px;
+  cursor: text;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-username-form:focus-within {
+  border-color: var(--accent-dark);
+  box-shadow: 0 0 0 3px rgba(20, 123, 88, 0.12);
 }
 
 .person-svg {
   width: 22px;
   height: 22px;
-
   flex-shrink: 0;
 
-  margin-right: 10px;
-
-  position: relative;
-}
-
-/* Simple person icon generated entirely with CSS */
-.person-svg::before {
-  content: "";
-
-  position: absolute;
-  top: 1px;
-  left: 7px;
-
-  width: 7px;
-  height: 7px;
-
-  border: 1.6px solid var(--text);
-  border-radius: 50%;
-}
-
-.person-svg::after {
-  content: "";
-
-  position: absolute;
-  bottom: 1px;
-  left: 3px;
-
-  width: 15px;
-  height: 8px;
-
-  border: 1.6px solid var(--text);
-  border-radius: 9px 9px 4px 4px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2311191d' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7'/%3E%3C/svg%3E")
+    center / contain no-repeat;
 }
 
 .input-username {
+  flex: 1;
   width: 100%;
-  height: 46px;
+  height: 58px;
 
   border: 0;
   outline: 0;
-
   background: transparent;
 
   color: var(--text);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .input-username::placeholder {
   color: var(--text-secondary);
+  font-weight: 400;
 }
 
-.fetch-games-btn {
+.slider-username-footer {
+  width: min(100%, 700px);
+  margin: 14px auto 0;
+}
+
+.slider-username-footer .change-slider-btn {
   width: 100%;
-  margin-top: 0;
+  height: 54px;
+}
+
+/* privacy note under the button (no HTML needed) */
+.silder-username-footer::after {
+  content: "We only access public game data. No account login required.";
+
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 20px auto 0;
+  padding-left: 22px;
+
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23647078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cline x1='12' y1='11' x2='12' y2='16'/%3E%3Ccircle cx='12' cy='8' r='.6'/%3E%3C/svg%3E")
+    left center / 15px 15px no-repeat;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
-   GAMES SLIDE
+   SLIDE 3 — FETCHED GAMES
    ========================================================================== */
 
-.games-slider-header {
-  margin-bottom: 34px;
-}
-
 .games-slider-body {
-  width: 100%;
+  width: min(100%, 1080px);
+  margin: 0 auto;
 
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 14px;
+  box-shadow:
+    var(--shadow-sm),
+    0 6px 18px rgba(17, 25, 29, 0.05);
 
   overflow: hidden;
-
-  box-shadow: 0 5px 14px rgba(17, 25, 29, 0.08);
 }
 
 .games-slider-body-header,
 .game-row {
   display: grid;
-  grid-template-columns:
-    1.05fr
-    1.45fr
-    1.15fr
-    0.8fr
-    1.5fr
-    0.75fr;
-
+  grid-template-columns: 1.05fr 1.45fr 1.15fr 0.8fr 1.5fr 0.75fr;
   align-items: center;
+  column-gap: 12px;
 }
 
 .games-slider-body-header {
   min-height: 50px;
-  padding: 0 24px;
+  padding: 0 28px;
 
   background: #e9edf1;
+  color: #5d6a72;
 
-  color: #59666e;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
 
-  font-size: 12px;
-  font-weight: 750;
-  letter-spacing: 0.01em;
+.col-head:last-child {
+  text-align: right;
 }
 
 .games-container {
-  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .games-list {
@@ -633,41 +673,54 @@ a {
 }
 
 .game-row {
-  min-height: 81px;
-
-  padding: 0 24px;
+  min-height: 78px;
+  padding: 0 28px;
 
   border-top: 1px solid var(--border);
 
   color: var(--text);
   font-size: 14px;
+  font-weight: 500;
+
+  transition: background 0.15s ease;
 }
 
+.games-list .game-row:first-child {
+  border-top: 0;
+}
+
+.game-row:hover {
+  background: var(--surface-hover);
+}
+
+/* positional, so it works even if the cell classes are missing */
 .game-row > div {
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.opponent-cell {
-  font-weight: 650;
+.game-row > div:nth-child(4) {
+  overflow: visible;
 }
 
-.time-control-cell,
-.opening-cell {
-  color: var(--text-secondary);
+.game-row > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  overflow: visible;
 }
 
 .result {
   width: max-content;
+  min-width: 46px;
+  height: 26px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-width: 48px;
-  height: 28px;
-
   padding: 0 12px;
-
   border-radius: 999px;
 
   font-size: 12px;
@@ -675,37 +728,33 @@ a {
 }
 
 .result.win {
-  background: #dcebcf;
-  color: #326a1b;
+  background: var(--accent);
+  color: #0f1c08;
 }
 
 .result.loss {
-  background: #f2d5d5;
-  color: #a72f34;
+  background: var(--danger);
+  color: #2a0a0c;
 }
 
 .result.draw {
   background: #eef1f2;
-  color: #445058;
-}
-
-.action-cell {
-  display: flex;
-  justify-content: flex-end;
+  color: #2d383e;
 }
 
 .review-btn {
-  min-width: 82px;
-  height: 46px;
+  min-width: 84px;
+  height: 44px;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 17px;
+  padding: 0 18px;
+  border-radius: 12px;
 
   background: var(--accent);
-  color: #16200f;
+  color: #13200b;
 
   font-size: 13px;
   font-weight: 700;
@@ -716,75 +765,66 @@ a {
 }
 
 .review-btn:hover {
-  background: #81b951;
+  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
+.games-slider-footer {
+  width: min(100%, 1080px);
+  margin: 24px auto 0;
+
+  display: flex;
+  justify-content: flex-start;
+}
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
 
 @media (max-width: 900px) {
-  .fetch-games .landing-page-header {
+  .landing-page-header {
     padding: 0 28px;
   }
 
-  .fetch-games .landing-page-body {
-    padding: 42px 24px 60px;
+  .landing-page-body {
+    padding: 40px 24px 60px;
   }
 
-  .platform-slider-body {
-    width: 100%;
-  }
-
+  /* table scrolls sideways instead of squashing */
   .games-slider-body {
     overflow-x: auto;
   }
 
   .games-slider-body-header,
   .game-row {
-    min-width: 850px;
+    min-width: 820px;
   }
 }
 
 @media (max-width: 650px) {
-  .fetch-games .landing-page-header {
-    height: 76px;
+  .landing-page-header {
+    height: 68px;
     padding: 0 18px;
   }
 
-  .fetch-games .app-title {
-    font-size: 19px;
+  .app-title {
+    font-size: 17px;
   }
 
-  .fetch-games .app-logo {
-    width: 36px;
-    height: 36px;
+  .nav-bar {
+    gap: 20px;
   }
 
-  .fetch-games .nav-bar {
-    display: none;
-  }
-
-  .fetch-games .landing-page-body {
-    min-height: calc(100vh - 76px);
-    padding: 30px 16px 50px;
+  .landing-page-body {
+    min-height: calc(100vh - 68px);
+    padding: 32px 16px 56px;
   }
 
   .body-step-indicator {
-    margin-bottom: 76px;
+    margin-bottom: 44px;
   }
 
-  .body-step-indicator .container {
-    width: 100%;
-  }
-
-  .step {
-    min-width: 70px;
-  }
-
-  .step p {
-    font-size: 11px;
+  .slider-header {
+    margin-bottom: 28px;
   }
 
   .slider-header-head {
@@ -800,38 +840,86 @@ a {
   }
 
   .choose-platform-btn {
-    min-height: 170px;
+    min-height: 184px;
   }
 
-  .silder-platform-footer {
-    margin-top: 18px;
+  .choose-platform-btn .platform-logo {
+    width: 72px;
+    height: 72px;
   }
 
-  .username-slider-body {
+  .silder-platform-footer .change-slider-btn {
     width: 100%;
+  }
+
+  .body-row {
+    padding: 0 16px;
   }
 }
 
-@media (max-width: 420px) {
-  .step {
-    min-width: 55px;
-  }
-
-  .step-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .step p {
-    font-size: 10px;
+@media (max-width: 520px) {
+  /* only the current step keeps its label */
+  .step:not(.active) p {
+    display: none;
   }
 
   .indicator-line {
-    margin-top: 13px;
+    margin: 0 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+/* CSS FOR UNDTERMINISTIC PROGRESS BAR */
+.games-loading {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 30px;
+}
+
+.games-loading p {
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.loading-bar {
+  width: min(100%, 320px);
+  height: 6px;
+  background: #e4e8ea;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.loading-bar-progress {
+  width: 35%;
+  height: 100%;
+  background: var(--accent-dark);
+  border-radius: inherit;
+  animation: indeterminate-loading 1.4s ease-in-out infinite;
+}
+
+@keyframes indeterminate-loading {
+  0% {
+    transform: translateX(-100%);
   }
 
-  .slider-header-head {
-    font-size: 25px;
+  100% {
+    transform: translateX(320px);
   }
+}
+
+/* for hiding undeterministic bar it */
+.hidden {
+  display: none !important;
 }

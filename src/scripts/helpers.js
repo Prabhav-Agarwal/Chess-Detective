@@ -63,3 +63,40 @@ export const whitePerspectiveCp = function (move, line, isLastMove) {
   if (lines[line].mate != null) return cpForMate(move, line);
   return effectiveCp(move, line);
 };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export const getJsonLichess = async function (url, options) {
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error : Status : ${response.status}`);
+    }
+
+    const text = await response.text();
+    const data = text
+      .split("\n")
+      .filter((el) => el.trim() !== "")
+      .map((el) => JSON.parse(el));
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getJsonChesscom = async function (url, options) {
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`HTTP Error : Status : ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

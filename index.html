@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="/src/styles/landingPage.css" />
     <script
       defer
-      src="src/scripts/controllers/gameController.js"
+      src="src/scripts/controllers/userController.js"
       type="module"
     ></script>
+    <!-- <script
+      defer
+      src="src/scripts/controllers/gameController.js"
+      type="module"
+    ></script> -->
   </head>
   <body>
     <div class="landing-page">
@@ -41,9 +46,8 @@
           <h1 class="app-title">Chess Detective</h1>
         </div>
         <div class="nav-bar">
-          <div class="nav-element">Home</div>
-          <div class="nav-element">Features</div>
-          <div class="nav-element">About</div>
+          <div class="nav-element" data-section="home">Home</div>
+          <div class="nav-element" data-section="features">Features</div>
         </div>
         <div>
           <a href="fetchGames.html" class="get-started-btn">Get Started</a>
@@ -51,7 +55,7 @@
       </header>
 
       <main class="landing-page-body">
-        <div class="home">
+        <div class="landing-page-body-section home">
           <div class="home-content">
             <div class="app-tagline">
               <div class="tagline-row">Your Games.</div>
@@ -171,7 +175,7 @@
             </svg>
           </div>
         </div>
-        <div class="features hidden">
+        <div class="landing-page-body-section features hidden">
           <div class="features-header">
             <div class="features-head">Everything You Need to Analyze</div>
             <div class="features-subhead-l1">
