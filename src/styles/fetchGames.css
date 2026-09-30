@@ -737,7 +737,8 @@ a {
   color: #2a0a0c;
 }
 
-.result.draw {
+.result.draw,
+.result.stalemate {
   background: #eef1f2;
   color: #2d383e;
 }

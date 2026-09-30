@@ -100,3 +100,100 @@ export const getJsonChesscom = async function (url, options) {
     throw error;
   }
 };
+
+export const extractChesscomApiData = function (gameObject, playerUsername) {
+  const extractedGameObj = {};
+  const date = new Date(gameObject.end_time * 1000);
+  const whiteUsername = gameObject.white.username;
+  const blackUsername = gameObject.black.username;
+
+  const opponent =
+    whiteUsername === playerUsername ? gameObject.black : gameObject.white;
+  const timeControl = gameObject.time_class;
+  const openingNameWordsArr = gameObject.eco
+    .match(/(?<=\/openings\/).*/)?.[0]
+    .split("-");
+  if (typeof openingNameWordsArr.at(-1)[0] === "number") {
+    openingNameWordsArr.splice(-1);
+  }
+  const index = openingNameWordsArr.at(-1).indexOf("...");
+  if (index != undefined && index != null) {
+    openingNameWordsArr[openingNameWordsArr.length - 1] = openingNameWordsArr
+      .at(-1)
+      .slice(0, index);
+  }
+
+  extractedGameObj.date = `${date.getDate()} ${date.toLocaleString("en-US", { month: "short" })}, ${date.getFullYear()}`;
+  extractedGameObj.opponent = opponent.username;
+  extractedGameObj.timeControl =
+    timeControl[0].toUpperCase() + timeControl.slice(1);
+  extractedGameObj.opening = openingNameWordsArr.join(" ");
+  extractedGameObj.result = "";
+  if (opponent.result === "win") {
+    extractedGameObj.result = "Loss";
+  }
+  if (
+    opponent.result === "loss" ||
+    opponent.result === "abandoned" ||
+    opponent.result === "checkmated" ||
+    opponent.result === "resigned" ||
+    opponent.result === "timeout"
+  ) {
+    extractedGameObj.result = "Win";
+  }
+  if (
+    opponent.result === "draw" ||
+    opponent.result === "timevsinsufficient" ||
+    opponent.result === "insufficient" ||
+    opponent.result === "repetition" ||
+    opponent.result === "agreed"
+  ) {
+    extractedGameObj.result = "Draw";
+  }
+  if (opponent.result === "stalemate") {
+    extractedGameObj.result = "Stalemate";
+  }
+  extractedGameObj.pgn = gameObject.pgn;
+
+  return extractedGameObj;
+};
+
+export const extractLichessApiData = function (gameObject, playerUsername) {
+  const extractedGameObj = {};
+  const date = new Date(gameObject.lastMoveAt);
+  const whiteUsername = gameObject.players.white.user.name;
+  const blackUsername = gameObject.players.black.user.name;
+  const opponent =
+    whiteUsername === playerUsername
+      ? gameObject.players.black.user
+      : gameObject.players.white.user;
+  const timeControl = gameObject.speed;
+
+  extractedGameObj.date = `${date.getDate()} ${date.toLocaleString("en-US", { month: "short" })}, ${date.getFullYear()}`;
+  extractedGameObj.opponent = opponent.name;
+  extractedGameObj.timeControl =
+    timeControl[0].toUpperCase() + timeControl.slice(1);
+  extractedGameObj.opening = gameObject.opening.name;
+  if (
+    gameObject.status === "draw" ||
+    gameObject.status === "threefold" ||
+    gameObject.status === "fiftymoves" ||
+    gameObject.status === "insufficient"
+  ) {
+    extractedGameObj.result = "Draw";
+  } else if (gameObject.status === "stalemate") {
+    extractedGameObj.result = "Stalemate";
+  } else {
+    extractedGameObj.result =
+      gameObject.players[gameObject.winner].user.name === opponent.name
+        ? "Loss"
+        : "Win";
+  }
+  extractedGameObj.pgn = gameObject.pgn;
+  return extractedGameObj;
+};
+
+///saving data to session storage
+export const saveToSessionStorage = function (key, value) {
+  sessionStorage.setItem(key, value);
+};

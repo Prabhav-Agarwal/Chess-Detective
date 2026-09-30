@@ -1,10 +1,12 @@
 import { CHESSCOM_LOGO_SRC } from "../config";
 import { LICHESS_LOGO_SRC } from "../config";
+import { saveToSessionStorage } from "../helpers";
 
 class Slider {
   #parentElement = document.querySelector(".body-slider");
   #allChoosePlatformBtns = document.querySelectorAll(".choose-platform-btn");
   #allSlides = document.querySelectorAll(".slider-slide");
+  #gamesList = document.querySelector(".games-list");
 
   //functions for adding handlers for events of slide 1
   addHandlerSelectPlatform() {
@@ -51,7 +53,7 @@ class Slider {
       .addEventListener("submit", (event) => event.preventDefault());
   }
 
-  addHandlerGetUsername(getUsernameHandler) {
+  addHandlerGetUsername(getUsernameHandler, fetchAndRenderGameResults) {
     this.#parentElement.addEventListener("click", (event) => {
       const target = event.target.closest(".fetch-games-btn");
       if (!target) return;
@@ -61,9 +63,33 @@ class Slider {
       const changeToSlide = document.querySelector(".slider-games");
       const numSlide = 3;
       this.#changeSlide(changeToSlide, numSlide);
-      // this.#renderLoadingBar();
+      this.#gamesList.innerHTML = "";
+      this.renderLoadingBar();
       getUsernameHandler(username);
+      fetchAndRenderGameResults();
     });
+  }
+
+  renderGameResults(fectchedGames) {
+    fectchedGames.forEach((gameObj) => {
+      const gameRowHTML = this.#getGameRowHTML(gameObj);
+      this.#gamesList.insertAdjacentHTML("beforeend", gameRowHTML);
+    });
+    this.#addHandlerReviewBtn();
+  }
+  #getGameRowHTML(options) {
+    return `<li class="game-row">
+                    <div class="cell date-cell">${options.date}</div>
+                    <div class="cell opponent-cell">${options.opponent}</div>
+                    <div class="cell time-control-cell">${options.timeControl}</div>
+                    <div class="cell result-cell">
+                      <div class="result ${options.result.toLowerCase()}">${options.result}</div>
+                    </div>
+                    <div class="cell opening-cell">${options.opening}</div>
+                    <div class="cell action-cell" data-pgn="${options.pgn}">
+                      <a href="gameReview.html" class="review-btn" data-pgn="${options.pgn}">Review</a>
+                    </div>
+                  </li>`;
   }
 
   addHandlerChangePlatform() {
@@ -86,12 +112,21 @@ class Slider {
     });
   }
 
-  #renderLoadingBar() {
+  #addHandlerReviewBtn() {
+    const allReviewBtns = document.querySelectorAll(".review-btn");
+    allReviewBtns.forEach((btn) =>
+      btn.addEventListener("click", (event) => {
+        saveToSessionStorage("pgn", btn.dataset.pgn);
+      }),
+    );
+  }
+
+  renderLoadingBar() {
     const loadingBar = document.querySelector(".games-loading");
     loadingBar.classList.remove("hidden");
   }
 
-  #removeLoadingBar() {
+  removeLoadingBar() {
     const loadingBar = document.querySelector(".games-loading");
     loadingBar.classList.add("hidden");
   }

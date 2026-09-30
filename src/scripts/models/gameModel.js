@@ -8,8 +8,8 @@ export const game = {
 };
 
 //function for starting a new chess game
-export const startGame = function (pgn) {
-  game.gamePgn = pgn;
+export const startGame = function () {
+  game.gamePgn = sessionStorage.getItem("pgn");
   game.chessGame = new Chess();
   game.chessGame.loadPgn(game.gamePgn);
   game.gameMoves = game.chessGame.history({ verbose: true });
