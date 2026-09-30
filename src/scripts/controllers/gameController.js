@@ -4,7 +4,7 @@ import { calculateStats } from "../services/calcStatsService.js";
 import { classifyMoves } from "../services/classifyMovesService.js";
 import { getGamesChesscom } from "../services/fetchGamesServics.js";
 
-await getGamesChesscom("PrabhavAgarwal1234");
+// await getGamesChesscom("PrabhavAgarwal1234");
 
 const posFEN = `r3kb1r/5p1p/5p2/1pPP1P2/p1n5/P4B2/2P1KPPP/R1B4R b kq - 0 19`;
 const gamePGN = `[Event "Live Chess"]

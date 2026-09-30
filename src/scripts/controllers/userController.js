@@ -18,6 +18,7 @@ const init = function () {
   sliderView.addHandlerFormSubmit();
   sliderView.addHandlerChangePlatform();
   sliderView.addHandlerGetUsername(getUsernameHandler);
+  sliderView.addHandlerChangeUsername();
 };
 
 init();

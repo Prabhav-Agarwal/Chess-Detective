@@ -61,6 +61,7 @@ class Slider {
       const changeToSlide = document.querySelector(".slider-games");
       const numSlide = 3;
       this.#changeSlide(changeToSlide, numSlide);
+      // this.#renderLoadingBar();
       getUsernameHandler(username);
     });
   }
@@ -75,6 +76,25 @@ class Slider {
     });
   }
 
+  addHandlerChangeUsername() {
+    this.#parentElement.addEventListener("click", (event) => {
+      const target = event.target.closest(".change-username-btn");
+      if (!target) return;
+      const changeToSlide = document.querySelector(".slider-username");
+      const numSlide = 2;
+      this.#changeSlide(changeToSlide, numSlide);
+    });
+  }
+
+  #renderLoadingBar() {
+    const loadingBar = document.querySelector(".games-loading");
+    loadingBar.classList.remove("hidden");
+  }
+
+  #removeLoadingBar() {
+    const loadingBar = document.querySelector(".games-loading");
+    loadingBar.classList.add("hidden");
+  }
   #changeSlide(toDisplaySlide, numSlide) {
     //updating slide
     this.#allSlides.forEach((slide) => slide.classList.remove("active"));
