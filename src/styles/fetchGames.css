@@ -83,7 +83,7 @@ a {
    HEADER
    ========================================================================== */
 
-.landing-page-header {
+.fetch-games-page-header {
   width: 100%;
   height: 76px;
 
@@ -152,7 +152,7 @@ a {
    MAIN BODY
    ========================================================================== */
 
-.landing-page-body {
+.fetch-games-page-body {
   width: min(100%, 1200px);
   min-height: calc(100vh - 76px);
 
@@ -782,11 +782,11 @@ a {
    ========================================================================== */
 
 @media (max-width: 900px) {
-  .landing-page-header {
+  .fetch-games-page-header {
     padding: 0 28px;
   }
 
-  .landing-page-body {
+  .fetch-games-page-body {
     padding: 40px 24px 60px;
   }
 
@@ -802,7 +802,7 @@ a {
 }
 
 @media (max-width: 650px) {
-  .landing-page-header {
+  .fetch-games-page-header {
     height: 68px;
     padding: 0 18px;
   }
@@ -815,7 +815,7 @@ a {
     gap: 20px;
   }
 
-  .landing-page-body {
+  .fetch-games-page-body {
     min-height: calc(100vh - 68px);
     padding: 32px 16px 56px;
   }

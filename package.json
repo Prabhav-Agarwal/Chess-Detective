@@ -19,6 +19,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "apexcharts": "^7.6.1",
     "chess.js": "^1.4.0",
     "chessboard-element": "^1.2.0"
   },

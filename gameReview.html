@@ -4,11 +4,418 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CHESS DETECTIVE | GAME REVIEW</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles/gameReview.css" />
     <script
       defer
       src="src/scripts/controllers/gameController.js"
       type="module"
     ></script>
   </head>
-  <body></body>
+  <body>
+    <div class="game-review">
+      <!-- header -->
+      <header class="game-review-page-header">
+        <div class="header-branding">
+          <span class="app-logo"
+            ><svg
+              width="26"
+              height="26"
+              viewBox="0 0 232.523 232.523"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill="#0A0F0C"
+                d="M191.981,186.136c2.459-26.64,5.491-124.514-73.554-181.851L112.52,0l-8.45,17.83L71.919,6.041l7.338,41.919
+            c-14.624,9.853-35.107,25.227-45.82,40.37c-6.452,9.111-7.19,20.091-1.998,30.124c6.623,12.8,21.19,20.366,35.178,18.031
+            c11.724-1.956,25.005-8.281,33.993-13.181C97.595,144.116,87.003,186,50.676,186v0.124H39.277v46.399h165.236v-46.399h-12.531
+            V186.136z M87.476,24.633l11.396,4.182l-4.504,9.511c-0.979,0.588-2.376,1.434-4.061,2.482L87.476,24.633z M113.882,112.257
+            l0.375-11.585l-9.714,6.307c-0.23,0.148-22.848,14.724-39.916,17.572c-9.031,1.502-18.255-3.546-22.437-11.652
+            c-1.788-3.449-4.014-10.323,1.126-17.564c15.917-22.473,58.339-47.259,58.765-47.508l1.625-0.943l13.45-28.375
+            c23.979,19.113,39.123,42.445,48.598,65.707l-29.571-5.375l-2.163,11.913l36.522,6.638c3.062,9.522,5.272,18.879,6.827,27.786
+            l-32.391-5.887l-2.164,11.904l36.416,6.62c0.981,8.369,1.407,16.112,1.549,22.993l-34.921-6.349l-2.151,11.916l36.984,6.715
+            c-0.178,5.426-0.526,9.835-0.834,12.933H84.249C105.675,167.83,113.194,133.358,113.882,112.257z M192.419,220.43H51.397v-22.188
+            h141.022V220.43z"
+              />
+              <circle fill="#0A0F0C" cx="99.041" cy="78.641" r="9.671" /></svg
+          ></span>
+          <h1 class="app-title">Chess Detective</h1>
+        </div>
+        <div class="nav-bar">
+          <div class="nav-element" data-section="home">
+            <a class="landing-page-link" href="/">Home</a>
+          </div>
+        </div>
+      </header>
+      <main class="game-reviw-page-body">
+        <section class="chessboard-section">
+          <section class="player-descrip player-1-descrip">
+            <img src="" alt="" class="player-avatar player-1-avtar" />
+            <div class="player-info player-1-info">
+              <span class="player-username player-1-username">Player 1</span>
+              <span class="player-rating player-1-rating">(1000)</span>
+            </div>
+          </section>
+          <section class="chessboard-wrapper">
+            <div class="row-labels">
+              <div class="row-num">1</div>
+              <div class="row-num">2</div>
+              <div class="row-num">3</div>
+              <div class="row-num">4</div>
+              <div class="row-num">5</div>
+              <div class="row-num">6</div>
+              <div class="row-num">7</div>
+              <div class="row-num">8</div>
+            </div>
+            <chess-board id="chess-board"></chess-board>
+            <div class="col-labels">
+              <div class="col-num">a</div>
+              <div class="col-num">b</div>
+              <div class="col-num">c</div>
+              <div class="col-num">d</div>
+              <div class="col-num">e</div>
+              <div class="col-num">f</div>
+              <div class="col-num">g</div>
+              <div class="col-num">h</div>
+            </div>
+          </section>
+          <section class="player-descrip player-2-descrip">
+            <img src="" alt="" class="player-avatar player-2-avtar" />
+            <div class="player-info player-2-info">
+              <span class="player-username player-2-username">Player 2</span>
+              <span class="player-rating player-2-rating">(1000)</span>
+            </div>
+          </section>
+          <section class="board-nav-bar">
+            <button class="board-nav-btn first-move-btn">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5 4V20M19 5L11 12L19 19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn previous-move-btn">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M15 5L8 12L15 19"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn play-btn">
+              <span class="nav-btn-svg"
+                ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M7 4.5V19.5L19 12L7 4.5Z" fill="currentColor" /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn next-move-btn">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M9 5L16 12L9 19"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn last-move-btn">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M19 4V20M5 5L13 12L5 19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+          </section>
+          <section class="eval-bar">
+            <div class="white-eval"></div>
+            <div class="black-eval"></div>
+          </section>
+        </section>
+        <section class="game-review-analysis-section">
+          <section class="choose-review-analysis">
+            <section class="choose-btn view-review-btn">Review</section>
+            <section class="choose-btn view-analysis-btn is-active">
+              Analysis
+            </section>
+          </section>
+          <section class="player-accuracy-section">
+            <div>
+              <img src="" alt="" class="player-avatar player-1-avatar" />
+              <div class="player-username player-1-username">Player 1</div>
+              <div class="player-accuracy">100%</div>
+            </div>
+            <div class="game-scoreline">1/2-1/2</div>
+            <div>
+              <img src="" alt="" class="player-avatar player-2-avatar" />
+              <div class="player-username player-2-username">Player 2</div>
+              <div class="player-accuracy">100%</div>
+            </div>
+          </section>
+          <section class="section-graph-or-engine-line">
+            <section class="engine-line-section is-hidden">
+              <div class="engine-line engine-line-1">
+                <div class="move-ply">e4</div>
+                <div class="move-ply">e5</div>
+                <div class="move-ply">Nf3</div>
+                <div class="move-ply">Nf6</div>
+                <div class="move-ply">e5</div>
+              </div>
+              <div class="engine-line engine-line-2">
+                <div class="move-ply">e4</div>
+                <div class="move-ply">e5</div>
+                <div class="move-ply">Nf3</div>
+                <div class="move-ply">Nf6</div>
+                <div class="move-ply">e5</div>
+              </div>
+            </section>
+            <section class="eval-graph-section">
+              <div id="eval-graph"></div>
+            </section>
+          </section>
+
+          <section class="section-move-classification-or-move-list">
+            <section class="move-classification-section">
+              <section class="player-1-move-classification">
+                <div class="player-username player-1-username">Player 1</div>
+                <div class="for-player-1 num-moves num-move-brilliant">0</div>
+                <div class="for-player-1 num-moves num-move-great">0</div>
+                <div class="for-player-1 num-moves num-move-book">0</div>
+                <div class="for-player-1 num-moves num-move-best">0</div>
+                <div class="for-player-1 num-moves num-move-excellent">0</div>
+                <div class="for-player-1 num-moves num-move-good">0</div>
+                <div class="for-player-1 num-moves num-move-inaccuracy">0</div>
+                <div class="for-player-1 num-moves num-move-mistake">0</div>
+                <div class="for-player-1 num-moves num-move-blunder">0</div>
+              </section>
+              <section class="move-classifications">
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#11B9B1" />
+                      <path
+                        d="M16 5.2 19.2 12l7.3.9-5.3 5.1 1.3 7.2-6.5-3.5-6.5 3.5 1.3-7.2-5.3-5.1 7.3-.9L16 5.2Z"
+                        fill="#fff"
+                      /></svg></span
+                  ><span class="move-name">Brilliant</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="15" fill="#2477D4" />
+                      <path
+                        d="M16 5.5 18.9 12l7.1.8-5.2 4.8 1.4 7-6.2-3.6-6.2 3.6 1.4-7L6 12.8l7.1-.8L16 5.5Z"
+                        fill="#FFFFFF"
+                      /></svg></span
+                  ><span class="move-name">Great</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#986744" />
+                      <path
+                        d="M16 11c-2.5-2-5.5-2.5-9-2v15c3.5-.5 6.5 0 9 2 2.5-2 5.5-2.5 9-2V9c-3.5-.5-6.5 0-9 2Z"
+                        fill="none"
+                        stroke="#fff"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M16 11v15"
+                        fill="none"
+                        stroke="#fff"
+                        stroke-width="1.8"
+                      /></svg></span
+                  ><span class="move-name">Book</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#269E52" />
+                      <path
+                        d="M16 5.2 19.2 12l7.3.9-5.3 5.1 1.3 7.2-6.5-3.5-6.5 3.5 1.3-7.2-5.3-5.1 7.3-.9L16 5.2Z"
+                        fill="#fff"
+                      /></svg></span
+                  ><span class="move-name">Best</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#269E52" />
+                      <path
+                        d="M11 14v11H7V14h4Zm3 11c-1.1 0-2-.9-2-2v-9c0-.5.2-1 .6-1.4L18 7l1.1 1.1c.3.3.5.8.4 1.2l-.8 3.7H25c1.1 0 2 .9 2 2l-1 8c-.1 1.1-1 2-2 2h-10Z"
+                        fill="#fff"
+                      /></svg></span
+                  ><span class="move-name">Excellent</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#69C987" />
+                      <path
+                        d="M7.5 16.5 13.5 22.5 25 10"
+                        fill="none"
+                        stroke="#fff"
+                        stroke-width="3.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      /></svg></span
+                  ><span class="move-name">Good</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#E5B52D" />
+                      <text
+                        x="16"
+                        y="21"
+                        text-anchor="middle"
+                        font-family="Arial,sans-serif"
+                        font-size="15"
+                        font-weight="bold"
+                        fill="#fff"
+                      >
+                        ?!
+                      </text>
+                    </svg></span
+                  ><span class="move-name">Inaccuracy</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#EF862D" />
+                      <text
+                        x="16"
+                        y="23"
+                        text-anchor="middle"
+                        font-family="Arial,sans-serif"
+                        font-size="23"
+                        font-weight="bold"
+                        fill="#fff"
+                      >
+                        ?
+                      </text>
+                    </svg></span
+                  ><span class="move-name">Mistake</span>
+                </div>
+                <div class="move-type">
+                  <span class="move-symbol"
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 32 32"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#E34B4B" />
+                      <text
+                        x="16"
+                        y="21"
+                        text-anchor="middle"
+                        font-family="Arial,sans-serif"
+                        font-size="15"
+                        font-weight="bold"
+                        fill="#fff"
+                      >
+                        ??
+                      </text>
+                    </svg></span
+                  ><span class="move-name">Blunder</span>
+                </div>
+              </section>
+              <section class="player-2-move-classification">
+                <div class="player-username player-2-username">Player 2</div>
+                <div class="for-player-2 num-moves num-move-brilliant">0</div>
+                <div class="for-player-2 num-moves num-move-great">0</div>
+                <div class="for-player-2 num-moves num-move-book">0</div>
+                <div class="for-player-2 num-moves num-move-best">0</div>
+                <div class="for-player-2 num-moves num-move-excellent">0</div>
+                <div class="for-player-2 num-moves num-move-good">0</div>
+                <div class="for-player-2 num-moves num-move-inaccuracy">0</div>
+                <div class="for-player-2 num-moves num-move-mistake">0</div>
+                <div class="for-player-2 num-moves num-move-blunder">0</div>
+              </section>
+            </section>
+            <section class="move-list-section is-hidden">
+              <ul class="move-list">
+                <li class="move-row">
+                  <div class="move-num">1</div>
+                  <div class="white-ply">d4</div>
+                  <div class="black-ply">d5</div>
+                </li>
+                <li class="move-row">
+                  <div class="move-num">2</div>
+                  <div class="white-ply">c4</div>
+                  <div class="black-ply">e6</div>
+                </li>
+                <li class="move-row">
+                  <div class="move-num">3</div>
+                  <div class="white-ply">Nc3</div>
+                  <div class="black-ply">Nf6</div>
+                </li>
+              </ul>
+            </section>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>

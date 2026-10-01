@@ -1,0 +1,1056 @@
+/* =========================================================
+   CHESS DETECTIVE — GAME REVIEW
+   Default: Dark theme
+   Light theme: body.theme-light
+   ========================================================= */
+
+:root {
+  color-scheme: dark;
+
+  --cd-bg: #0b1117;
+  --cd-header: #0e151d;
+  --cd-panel: #111b24;
+  --cd-panel-raised: #16232d;
+  --cd-panel-hover: #1b2b36;
+
+  --cd-border: #263642;
+  --cd-border-soft: #1e2c37;
+
+  --cd-text: #edf3f7;
+  --cd-text-secondary: #c0ccd6;
+  --cd-muted: #8494a3;
+
+  --cd-accent: #55d6ad;
+  --cd-accent-hover: #79e6c2;
+  --cd-accent-soft: rgba(85, 214, 173, 0.13);
+
+  --cd-blue: #3498e8;
+  --cd-gold: #f5c84c;
+  --cd-red: #f05a63;
+
+  --cd-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --cd-radius: 14px;
+
+  /* Layout sizing */
+  --cd-header-h: 64px;
+  --cd-row-h: 39px; /* one row of the move-classification table */
+  --cd-head-h: 34px; /* the username row above the counts */
+}
+
+/* ---------- Light theme variables ---------- */
+
+body.theme-light {
+  color-scheme: light;
+
+  --cd-bg: #f1f5f7;
+  --cd-header: #ffffff;
+  --cd-panel: #ffffff;
+  --cd-panel-raised: #f7fafb;
+  --cd-panel-hover: #edf5f2;
+
+  --cd-border: #d9e3e8;
+  --cd-border-soft: #e8eef1;
+
+  --cd-text: #17232d;
+  --cd-text-secondary: #425361;
+  --cd-muted: #71818d;
+
+  --cd-accent: #159b78;
+  --cd-accent-hover: #087d61;
+  --cd-accent-soft: rgba(21, 155, 120, 0.1);
+
+  --cd-blue: #2477d4;
+  --cd-gold: #b9850a;
+  --cd-red: #d83f4b;
+
+  --cd-shadow: 0 10px 28px rgba(31, 54, 67, 0.08);
+}
+
+/* ---------- Global ---------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--cd-bg);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--cd-bg);
+  color: var(--cd-text);
+  font-family: "Inter", sans-serif;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+/* Lock the page to the viewport; only inner panels scroll. */
+.game-review {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--cd-bg);
+}
+
+/* ---------- Header ---------- */
+
+.game-review-page-header {
+  flex: 0 0 var(--cd-header-h);
+  height: var(--cd-header-h);
+  padding: 0 clamp(20px, 4vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: var(--cd-header);
+  border-bottom: 1px solid var(--cd-border);
+}
+
+.header-branding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-logo {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--cd-accent);
+}
+
+.app-logo svg {
+  width: 30px;
+  height: 30px;
+}
+
+.app-logo svg path,
+.app-logo svg circle {
+  fill: currentColor;
+}
+
+.app-title {
+  margin: 0;
+  color: var(--cd-text);
+  font-size: clamp(19px, 1.8vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.app-title::first-letter {
+  color: var(--cd-text);
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-element {
+  display: flex;
+  align-items: center;
+}
+
+.landing-page-link {
+  padding: 8px 15px;
+  color: var(--cd-text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.landing-page-link:hover {
+  color: var(--cd-accent);
+  background: var(--cd-accent-soft);
+}
+
+/* ---------- Main page layout ---------- */
+
+.game-reviw-page-body {
+  flex: 1;
+  min-height: 0; /* lets the grid shrink to the viewport */
+  overflow-y: auto; /* fallback only: kicks in if the board block is taller than the screen */
+  width: min(1440px, calc(100% - 64px));
+  margin: 16px auto;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.95fr) minmax(440px, 1.05fr);
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(28px, 4vw, 60px);
+}
+
+/* ---------- LEFT: board block ----------
+   grid layout:
+        .    | player 1
+       eval  | board (+ rank/file labels)
+        .    | player 2
+        .    | nav buttons
+   No gaps between the rows — everything sits flush.            */
+
+.chessboard-section {
+  --cd-label: 24px; /* rank / file label size */
+  --cd-eval-w: 12px;
+  --cd-eval-gap: 6px;
+
+  min-width: 0;
+  align-self: start;
+  width: 100%; /* board fills the left column, same as the original */
+
+  display: grid;
+  grid-template-columns: var(--cd-eval-w) minmax(0, 1fr);
+  grid-template-areas:
+    ".    p1"
+    "eval board"
+    ".    p2"
+    ".    nav";
+  column-gap: var(--cd-eval-gap);
+  row-gap: 0;
+}
+
+.player-1-descrip {
+  grid-area: p1;
+}
+
+.chessboard-wrapper {
+  grid-area: board;
+}
+
+.player-2-descrip {
+  grid-area: p2;
+}
+
+.board-nav-bar {
+  grid-area: nav;
+}
+
+.eval-bar {
+  grid-area: eval;
+}
+
+.game-review-analysis-section {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* tabs / accuracy / graph sit flush */
+  overflow-x: hidden;
+  overflow-y: auto; /* the WHOLE right column scrolls */
+  padding-bottom: 6px;
+}
+
+.game-review-analysis-section > * {
+  flex-shrink: 0; /* keep natural height; scroll instead of squashing */
+}
+
+/* ---------- Player descriptions around board ---------- */
+
+.player-descrip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 4px 0;
+}
+
+.player-avatar {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border-radius: 50%;
+  background: var(--cd-panel-raised);
+  border: 1px solid var(--cd-border);
+}
+
+.player-info {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 0;
+}
+
+.player-username {
+  color: var(--cd-text);
+  font-size: 15px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.player-rating {
+  color: var(--cd-muted);
+  font-size: 13px;
+}
+
+/* ---------- Chessboard container ---------- */
+
+.chessboard-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: var(--cd-label) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) var(--cd-label);
+  column-gap: 5px;
+  row-gap: 4px;
+  align-items: stretch;
+}
+
+#chess-board {
+  grid-column: 2;
+  grid-row: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #c89a6d;
+  box-shadow: var(--cd-shadow);
+}
+
+/* Coordinate labels
+   HTML lists ranks 1→8, but the board shows 8 at the top,
+   so the rank column is flipped here. */
+
+.row-labels {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  color: var(--cd-text-secondary);
+  font-size: 13px;
+}
+
+.row-num {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.col-labels {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+  justify-items: center;
+  color: var(--cd-text-secondary);
+  font-size: 13px;
+}
+
+.col-num {
+  text-align: center;
+}
+
+/* ---------- Board navigation ---------- */
+
+.board-nav-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 0;
+}
+
+.board-nav-btn {
+  min-width: 0;
+  height: 36px;
+  display: grid;
+  place-items: center;
+
+  color: var(--cd-text-secondary);
+  background: var(--cd-panel);
+  border: 1px solid var(--cd-border);
+  border-radius: 9px;
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.board-nav-btn:hover {
+  color: var(--cd-accent);
+  background: var(--cd-panel-hover);
+  border-color: var(--cd-accent);
+}
+
+.board-nav-btn:active {
+  transform: scale(0.97);
+}
+
+.board-nav-btn:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: 3px;
+}
+
+.nav-btn-svg {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+}
+
+.nav-btn-svg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- Evaluation bar (vertical, left of the board) ----------
+   White grows from the bottom.
+   JS: set  .white-eval  style.height = "NN%"   (it was width before)   */
+
+.eval-bar {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+  height: auto;
+  /* stop at the bottom of the board, not the file-label row */
+  margin: 0 0 calc(var(--cd-label) + 4px) 0;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--cd-panel-raised);
+  border: 1px solid var(--cd-border);
+}
+
+.white-eval {
+  width: 100%;
+  height: 50%;
+  background: #e7edf1;
+  transition: height 200ms ease;
+}
+
+.black-eval {
+  flex: 1;
+  width: 100%;
+  background: #33414d;
+}
+
+body.theme-light .white-eval {
+  background: #f8fafb;
+}
+
+body.theme-light .black-eval {
+  background: #455563;
+}
+
+/* ---------- Review / Analysis tabs ---------- */
+
+.choose-review-analysis {
+  flex: 0 0 auto;
+  min-height: 52px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+
+  background: var(--cd-panel);
+  border: 1px solid var(--cd-border);
+  border-radius: var(--cd-radius) var(--cd-radius) 0 0;
+}
+
+.choose-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px;
+  color: var(--cd-text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
+}
+
+.choose-btn:hover {
+  color: var(--cd-accent);
+  background: var(--cd-accent-soft);
+}
+
+.choose-btn.is-active {
+  color: var(--cd-accent);
+  background: var(--cd-panel-raised);
+}
+
+.choose-btn.is-active::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  content: "";
+  background: var(--cd-accent);
+}
+
+.choose-btn:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: -3px;
+}
+
+/* ---------- Player accuracy summary ---------- */
+
+.player-accuracy-section {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 22px;
+  background: var(--cd-panel);
+  border: 1px solid var(--cd-border);
+  border-top: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.player-accuracy-section > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.player-accuracy-section .player-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+}
+
+.player-accuracy-section .player-username {
+  max-width: 100%;
+  font-size: 14px;
+}
+
+.player-accuracy {
+  color: var(--cd-accent);
+  font-size: clamp(22px, 2.3vw, 28px);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.game-scoreline {
+  color: var(--cd-text);
+  font-size: clamp(18px, 2vw, 25px);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ---------- Panels (shared look) ---------- */
+
+.section-graph-or-engine-line,
+.section-move-classification-or-move-list {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--cd-panel);
+  border: 1px solid var(--cd-border);
+  border-radius: var(--cd-radius);
+  box-shadow: var(--cd-shadow);
+}
+
+/* ---------- Graph / engine-line panel (fixed height) ---------- */
+
+.section-graph-or-engine-line {
+  flex: 0 0 auto;
+  border-top: 0;
+  border-radius: 0 0 var(--cd-radius) var(--cd-radius);
+}
+
+.eval-graph-section {
+  height: 170px;
+  padding: 14px 18px;
+}
+
+#eval-graph {
+  width: 100%;
+  height: 100%;
+}
+
+/* Engine PV lines — same 170px box so the layout doesn't jump on toggle;
+   scrolls inside if there are many lines. */
+
+.engine-line-section {
+  height: 170px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 22px;
+}
+
+.engine-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+}
+
+.move-ply {
+  min-width: 42px;
+  padding: 9px 12px;
+  color: var(--cd-text);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--cd-panel-raised);
+  border: 1px solid var(--cd-border);
+  border-radius: 7px;
+}
+
+/* ---------- Bottom panel (natural height, NOT scrollable itself) ----------
+   The whole right column scrolls instead. */
+
+.section-move-classification-or-move-list {
+  flex: 0 0 auto;
+  margin-top: 14px;
+}
+
+/* ---------- Move classification ----------
+   3 columns: [P1 counts] [labels] [P2 counts]
+   Counts columns have a username header row, so the label column
+   is pushed down by the same height to keep every row aligned.   */
+
+.move-classification-section {
+  display: grid;
+  grid-template-columns: minmax(48px, 0.7fr) minmax(140px, 1.5fr) minmax(
+      48px,
+      0.7fr
+    );
+  align-items: start;
+  gap: 8px;
+  padding: 12px 16px 16px;
+}
+
+.player-1-move-classification,
+.player-2-move-classification {
+  display: grid;
+  grid-template-rows: var(--cd-head-h) repeat(9, var(--cd-row-h));
+  align-items: center;
+  justify-items: center;
+  min-width: 0;
+}
+
+.player-1-move-classification .player-username,
+.player-2-move-classification .player-username {
+  width: 100%;
+  overflow: hidden;
+  color: var(--cd-text-secondary);
+  font-size: 12px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.num-moves {
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Move-count colors follow the classification category. */
+
+.num-move-brilliant {
+  color: #11b9b1;
+}
+
+.num-move-great {
+  color: var(--cd-blue);
+}
+
+.num-move-book {
+  color: #b78a67;
+}
+
+.num-move-best,
+.num-move-excellent {
+  color: #45bd79;
+}
+
+.num-move-good {
+  color: #69c987;
+}
+
+.num-move-inaccuracy {
+  color: #e5b52d;
+}
+
+.num-move-mistake {
+  color: #ef862d;
+}
+
+.num-move-blunder {
+  color: #e34b4b;
+}
+
+/* Classification names and icons (9 rows, no header) */
+
+.move-classifications {
+  display: grid;
+  grid-template-rows: repeat(9, var(--cd-row-h));
+  padding-top: var(--cd-head-h); /* aligns with the counts columns */
+  min-width: 0;
+}
+
+.move-type {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  color: var(--cd-text-secondary);
+  font-size: 14px;
+}
+
+.move-symbol {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
+}
+
+.move-symbol svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.move-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Move list (scrolls via the parent panel) ---------- */
+
+.move-list-section {
+  max-height: 460px;
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.move-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.move-row {
+  display: grid;
+  grid-template-columns: 42px 1fr 1fr;
+  align-items: center;
+  min-height: 42px;
+  overflow: hidden;
+
+  color: var(--cd-text-secondary);
+  background: var(--cd-panel-raised);
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+
+.move-row:nth-child(even) {
+  background: var(--cd-panel);
+}
+
+.move-num,
+.white-ply,
+.black-ply {
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.move-num {
+  color: var(--cd-muted);
+  text-align: center;
+  background: var(--cd-panel-hover);
+}
+
+.white-ply,
+.black-ply {
+  color: var(--cd-text);
+  cursor: pointer;
+}
+
+.white-ply:hover,
+.black-ply:hover {
+  color: var(--cd-accent);
+  background: var(--cd-accent-soft);
+}
+
+.white-ply.is-current-ply,
+.black-ply.is-current-ply {
+  color: var(--cd-accent);
+  background: var(--cd-accent-soft);
+}
+
+/* ---------- Scrollbars ---------- */
+
+.move-list-section,
+.game-review-analysis-section {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cd-border) transparent;
+}
+
+.move-list-section::-webkit-scrollbar,
+.game-review-analysis-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.move-list-section::-webkit-scrollbar-thumb,
+.game-review-analysis-section::-webkit-scrollbar-thumb {
+  background: var(--cd-border);
+  border-radius: 20px;
+}
+
+.move-list-section::-webkit-scrollbar-thumb:hover,
+.game-review-analysis-section::-webkit-scrollbar-thumb:hover {
+  background: var(--cd-muted);
+}
+
+/* ---------- Shared visibility / state classes ---------- */
+
+.is-hidden {
+  display: none !important;
+}
+
+.is-active {
+  /* State styling is defined on the relevant component above. */
+}
+
+/* ---------- Responsive layout ----------
+   Stacked layout: the page scrolls normally again, because a
+   viewport-locked layout isn't usable on small screens.        */
+
+@media (max-width: 1050px) {
+  .game-review {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .game-reviw-page-body {
+    width: min(760px, calc(100% - 40px));
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    overflow: visible;
+    gap: 24px;
+    margin: 20px auto;
+  }
+
+  .chessboard-section {
+    width: 100%;
+    justify-self: center;
+  }
+
+  .game-review-analysis-section {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .game-review-page-header {
+    height: 56px;
+    flex-basis: 56px;
+    padding: 0 16px;
+  }
+
+  .app-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .app-logo svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .app-title {
+    font-size: 19px;
+  }
+
+  .game-reviw-page-body {
+    width: calc(100% - 24px);
+    margin: 14px auto;
+    gap: 18px;
+  }
+
+  .chessboard-section {
+    --cd-label: 20px;
+    --cd-eval-w: 10px;
+    --cd-eval-gap: 6px;
+  }
+
+  .player-descrip {
+    min-height: 44px;
+  }
+
+  .player-avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .player-username {
+    font-size: 13px;
+  }
+
+  .board-nav-bar {
+    gap: 6px;
+  }
+
+  .board-nav-btn {
+    height: 34px;
+  }
+
+  .player-accuracy-section {
+    padding: 14px 10px;
+    gap: 6px;
+  }
+
+  .player-accuracy-section .player-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .player-accuracy-section .player-username {
+    font-size: 11px;
+  }
+
+  .game-scoreline {
+    font-size: 17px;
+  }
+
+  .eval-graph-section {
+    padding: 10px;
+  }
+
+  .move-classification-section {
+    grid-template-columns: minmax(36px, 0.55fr) minmax(115px, 1.7fr) minmax(
+        36px,
+        0.55fr
+      );
+    gap: 4px;
+    padding: 10px 8px 14px;
+  }
+
+  .move-type {
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .move-symbol {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+  }
+
+  .num-moves {
+    font-size: 15px;
+  }
+}
+
+/* =========================================================
+   FINAL LAYOUT OVERRIDES
+   ========================================================= */
+
+/* Restore the board's intended width by reclaiming the space
+   used by the vertical evaluation bar and its column gap. */
+.chessboard-section {
+  width: calc(100% + var(--cd-eval-w) + var(--cd-eval-gap));
+}
+
+/* The complete right-hand column is the single scroll container. */
+.game-review-analysis-section {
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: 0;
+}
+
+/* Do not create a separate scroll area for the move list. */
+.move-list-section {
+  max-height: none;
+  overflow: visible;
+}
+
+/* Classification stays at natural height; right column handles scrolling. */
+.section-move-classification-or-move-list {
+  overflow: visible;
+}
+
+/* Keep the Review/Analysis tabs flush with the graph/engine panel. */
+.choose-review-analysis {
+  margin-bottom: 0;
+  border-radius: var(--cd-radius) var(--cd-radius) 0 0;
+}
+
+.section-graph-or-engine-line {
+  margin-top: 0;
+  border-top: 0;
+  border-radius: 0 0 var(--cd-radius) var(--cd-radius);
+}
+
+/* Compact board navigation controls. */
+.board-nav-bar {
+  gap: 6px;
+}
+
+.board-nav-btn {
+  height: 30px;
+  border-radius: 7px;
+}
+
+.nav-btn-svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 600px) {
+  /* Prevent the board from extending beyond the viewport on mobile. */
+  .chessboard-section {
+    width: 100%;
+  }
+
+  .board-nav-btn {
+    height: 30px;
+  }
+
+  .nav-btn-svg {
+    width: 16px;
+    height: 16px;
+  }
+}
