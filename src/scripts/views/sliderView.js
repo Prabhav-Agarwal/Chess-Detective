@@ -70,12 +70,12 @@ class Slider {
     });
   }
 
-  renderGameResults(fectchedGames) {
-    fectchedGames.forEach((gameObj) => {
+  renderGameResults(fetchedGames) {
+    fetchedGames.forEach((gameObj) => {
       const gameRowHTML = this.#getGameRowHTML(gameObj);
       this.#gamesList.insertAdjacentHTML("beforeend", gameRowHTML);
     });
-    this.#addHandlerReviewBtn();
+    this.#addHandlerReviewBtn(fetchedGames);
   }
   #getGameRowHTML(options) {
     return `<li class="game-row">
@@ -86,8 +86,8 @@ class Slider {
                       <div class="result ${options.result.toLowerCase()}">${options.result}</div>
                     </div>
                     <div class="cell opening-cell">${options.opening}</div>
-                    <div class="cell action-cell" data-pgn="${options.pgn}">
-                      <a href="gameReview.html" class="review-btn" data-pgn="${options.pgn}">Review</a>
+                    <div class="cell action-cell" >
+                      <a href="gameReview.html" class="review-btn" data-id="${options.id}">Review</a>
                     </div>
                   </li>`;
   }
@@ -112,11 +112,14 @@ class Slider {
     });
   }
 
-  #addHandlerReviewBtn() {
+  #addHandlerReviewBtn(gamesArray) {
     const allReviewBtns = document.querySelectorAll(".review-btn");
     allReviewBtns.forEach((btn) =>
       btn.addEventListener("click", (event) => {
-        saveToSessionStorage("pgn", btn.dataset.pgn);
+        const target = event.target;
+        const id = target.dataset.id;
+        const game = gamesArray.find((game) => game.id === id);
+        saveToSessionStorage("pgn", game.pgn);
       }),
     );
   }

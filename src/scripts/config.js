@@ -59,3 +59,6 @@ export const LICHESS_LOGO_SRC =
 ////API CONFIGURATIONS
 export const LICHESS_GAMES_REQUEST_URL = `https://lichess.org/api/games/user/`;
 export const CHESSCOM_GAMES_REQUEST_URL = `https://api.chess.com/pub/player/`;
+export const MIN_GAMES_TO_FETCH = 75;
+export const CURR_YEAR = new Date().getFullYear();
+export const CURR_MONTH = new Date().getMonth() + 1;

@@ -154,6 +154,7 @@ export const extractChesscomApiData = function (gameObject, playerUsername) {
     extractedGameObj.result = "Stalemate";
   }
   extractedGameObj.pgn = gameObject.pgn;
+  extractedGameObj.id = gameObject.uuid;
 
   return extractedGameObj;
 };
@@ -190,6 +191,7 @@ export const extractLichessApiData = function (gameObject, playerUsername) {
         : "Win";
   }
   extractedGameObj.pgn = gameObject.pgn;
+  extractedGameObj.id = gameObject.id;
   return extractedGameObj;
 };
 
