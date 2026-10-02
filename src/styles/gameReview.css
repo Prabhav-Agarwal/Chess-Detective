@@ -1455,3 +1455,149 @@ body.strict-mono .num-moves {
     animation-duration: 0.01ms !important;
   }
 }
+
+/* =========================================================
+   REVIEW LOADING OVERLAY
+   Uses the existing --cd-* tokens.
+   Hide it with the existing .is-hidden class when the review is ready.
+   ========================================================= */
+
+.review-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(10, 10, 10, 0.6);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.review-overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ---------- The square box ---------- */
+
+.review-loader {
+  --loader-size: clamp(96px, 26vw, 128px);
+
+  position: relative;
+  width: var(--loader-size);
+  height: var(--loader-size);
+  display: grid;
+  place-items: center;
+  border-radius: 20%; /* slightly rounded corners, scales with the box */
+  background: var(--cd-panel-raised);
+  box-shadow: var(--cd-shadow);
+}
+
+/* The SVG ring sits exactly on the box edge */
+.review-loader-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.review-loader-ring rect {
+  fill: none;
+  stroke-width: 2;
+}
+
+.review-ring-track {
+  stroke: var(--cd-border);
+}
+
+/* The moving line: 24% of the edge is lit, the rest is gap */
+.review-ring-runner {
+  stroke: var(--cd-accent);
+  stroke-linecap: round;
+  stroke-dasharray: 24 76;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+  animation: review-ring-run 1.8s linear infinite;
+}
+
+@keyframes review-ring-run {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+/* ---------- Logo in the centre ---------- */
+
+.review-loader-logo {
+  width: 52%;
+  height: 52%;
+  display: grid;
+  place-items: center;
+  color: var(--cd-accent);
+  animation: review-logo-pulse 2.4s ease-in-out infinite;
+}
+
+.review-loader-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.review-loader-logo svg path,
+.review-loader-logo svg circle {
+  fill: currentColor;
+}
+
+@keyframes review-logo-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(0.96);
+  }
+}
+
+/* ---------- Text below ---------- */
+
+.review-overlay-title {
+  margin: 28px 0 0;
+  color: var(--cd-text);
+  font-size: clamp(18px, 2.2vw, 22px);
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+
+.review-overlay-text {
+  margin: 10px 0 0;
+  max-width: 340px;
+  color: var(--cd-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ---------- Reduced motion ----------
+   Your global rule shrinks animation-duration to ~0ms, which would make an
+   infinite animation flicker. So stop these two and show a calm static state. */
+
+@media (prefers-reduced-motion: reduce) {
+  .review-ring-runner {
+    animation: review-ring-run 1.8s linear infinite;
+  }
+
+  .review-loader-logo {
+    animation: none;
+  }
+}
+
+.review-ring-runner {
+  animation: review-ring-run 1.8s linear infinite !important;
+  stroke-dasharray: 24 76 !important;
+}
