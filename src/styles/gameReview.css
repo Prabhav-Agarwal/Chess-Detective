@@ -1,69 +1,74 @@
 /* =========================================================
    CHESS DETECTIVE — GAME REVIEW
-   Default: Dark theme
-   Light theme: body.theme-light
+   Black & white theme (default — no body class needed)
+
+   Everything colour-related lives in the tokens below.
+   Layout, sizing and structure are unchanged from the base.
    ========================================================= */
 
 :root {
   color-scheme: dark;
 
-  --cd-bg: #0b1117;
-  --cd-header: #0e151d;
-  --cd-panel: #111b24;
-  --cd-panel-raised: #16232d;
-  --cd-panel-hover: #1b2b36;
+  /* Surfaces */
+  --cd-bg: #0a0a0a;
+  --cd-header: #0f0f0f;
+  --cd-panel: #141414;
+  --cd-panel-raised: #1b1b1b;
+  --cd-panel-hover: #242424;
 
-  --cd-border: #263642;
-  --cd-border-soft: #1e2c37;
+  /* Lines */
+  --cd-border: #2c2c2c;
+  --cd-border-soft: #202020;
 
-  --cd-text: #edf3f7;
-  --cd-text-secondary: #c0ccd6;
-  --cd-muted: #8494a3;
+  /* Text */
+  --cd-text: #f5f5f5;
+  --cd-text-secondary: #c4c4c4;
+  --cd-muted: #8a8a8a;
 
-  --cd-accent: #55d6ad;
-  --cd-accent-hover: #79e6c2;
-  --cd-accent-soft: rgba(85, 214, 173, 0.13);
+  /* Accent = white */
+  --cd-accent: #ffffff;
+  --cd-accent-hover: #d9d9d9;
+  --cd-accent-soft: rgba(255, 255, 255, 0.1);
 
+  /* Status colours (kept for move classifications, as in the mockup) */
   --cd-blue: #3498e8;
   --cd-gold: #f5c84c;
   --cd-red: #f05a63;
 
-  --cd-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --cd-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
   --cd-radius: 14px;
+
+  /* Chessboard squares */
+  --cd-sq-light: #d4d4d4;
+  --cd-sq-dark: #737373;
+  --cd-sq-light-hl: #e1e1e1; /* last-move highlight on a light square */
+  --cd-sq-dark-hl: #9d9d9d; /* last-move highlight on a dark square  */
+
+  /* Evaluation bar */
+  --cd-eval-white: #f5f5f5;
+  --cd-eval-black: #333333;
+
+  /* Evaluation graph */
+  --cd-graph-line: #ffffff;
+  --cd-graph-fill: rgba(255, 255, 255, 0.14);
+  --cd-graph-axis: rgba(255, 255, 255, 0.22);
 
   /* Layout sizing */
   --cd-header-h: 64px;
   --cd-row-h: 39px; /* one row of the move-classification table */
   --cd-head-h: 34px; /* the username row above the counts */
-}
 
-/* ---------- Light theme variables ---------- */
+  /* Right panel width (reference: ~385px) */
+  --cd-right-w: 385px;
 
-body.theme-light {
-  color-scheme: light;
+  /* Board size follows viewport height so the board block fits the screen.
+     234px = header + page margins + both player strips + file labels.
+     Bigger number = smaller board. */
+  --cd-board-size: min(calc(100dvh - 234px), 620px);
 
-  --cd-bg: #f1f5f7;
-  --cd-header: #ffffff;
-  --cd-panel: #ffffff;
-  --cd-panel-raised: #f7fafb;
-  --cd-panel-hover: #edf5f2;
-
-  --cd-border: #d9e3e8;
-  --cd-border-soft: #e8eef1;
-
-  --cd-text: #17232d;
-  --cd-text-secondary: #425361;
-  --cd-muted: #71818d;
-
-  --cd-accent: #159b78;
-  --cd-accent-hover: #087d61;
-  --cd-accent-soft: rgba(21, 155, 120, 0.1);
-
-  --cd-blue: #2477d4;
-  --cd-gold: #b9850a;
-  --cd-red: #d83f4b;
-
-  --cd-shadow: 0 10px 28px rgba(31, 54, 67, 0.08);
+  /* Total height of the left block (strips + board + file labels);
+     the right panel is made exactly this tall so both sides line up. */
+  --cd-block-h: calc(var(--cd-board-size) + 124px);
 }
 
 /* ---------- Global ---------- */
@@ -133,12 +138,15 @@ button {
   height: 36px;
   display: grid;
   place-items: center;
-  color: var(--cd-accent);
+  flex: 0 0 auto;
+  color: var(--cd-bg); /* icon colour */
+  background: #ffffff; /* white tile */
+  border-radius: 9px;
 }
 
 .app-logo svg {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
 }
 
 .app-logo svg path,
@@ -193,10 +201,11 @@ button {
   width: min(1440px, calc(100% - 64px));
   margin: 16px auto;
   display: grid;
-  grid-template-columns: minmax(360px, 0.95fr) minmax(440px, 1.05fr);
+  grid-template-columns: auto var(--cd-right-w);
   grid-template-rows: minmax(0, 1fr);
-  align-items: stretch;
-  gap: clamp(28px, 4vw, 60px);
+  justify-content: center;
+  align-items: start;
+  gap: clamp(24px, 12vw, 170px);
 }
 
 /* ---------- LEFT: board block ----------
@@ -204,7 +213,6 @@ button {
         .    | player 1
        eval  | board (+ rank/file labels)
         .    | player 2
-        .    | nav buttons
    No gaps between the rows — everything sits flush.            */
 
 .chessboard-section {
@@ -214,15 +222,18 @@ button {
 
   min-width: 0;
   align-self: start;
-  width: 100%; /* board fills the left column, same as the original */
+  /* board + rank labels (24px + 5px gap) + eval bar + its gap */
+  width: calc(
+    var(--cd-board-size) + var(--cd-label) + 5px + var(--cd-eval-w) +
+      var(--cd-eval-gap)
+  );
 
   display: grid;
   grid-template-columns: var(--cd-eval-w) minmax(0, 1fr);
   grid-template-areas:
     ".    p1"
     "eval board"
-    ".    p2"
-    ".    nav";
+    ".    p2";
   column-gap: var(--cd-eval-gap);
   row-gap: 0;
 }
@@ -239,24 +250,22 @@ button {
   grid-area: p2;
 }
 
-.board-nav-bar {
-  grid-area: nav;
-}
-
 .eval-bar {
   grid-area: eval;
 }
 
 .game-review-analysis-section {
+  width: var(--cd-right-w);
+  height: var(--cd-block-h); /* same height as the board block */
+  max-height: 100%;
   min-width: 0;
   min-height: 0;
-  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 0; /* tabs / accuracy / graph sit flush */
   overflow-x: hidden;
   overflow-y: auto; /* the WHOLE right column scrolls */
-  padding-bottom: 6px;
+  scrollbar-gutter: stable;
 }
 
 .game-review-analysis-section > * {
@@ -323,7 +332,7 @@ button {
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 5px;
-  background: #c89a6d;
+  background: var(--cd-sq-dark);
   box-shadow: var(--cd-shadow);
 }
 
@@ -364,11 +373,22 @@ button {
 
 /* ---------- Board navigation ---------- */
 
+/* Last child of .game-review-analysis-section.
+   margin-top:auto  -> sits at the bottom when the content is short
+   position:sticky  -> stays pinned at the bottom while the panel scrolls */
 .board-nav-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin-top: auto;
+  padding: 10px 0 0;
+  background: var(
+    --cd-bg
+  ); /* content scrolls underneath, so it must be opaque */
+
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-top: 0;
+  gap: 6px;
 }
 
 .board-nav-btn {
@@ -438,22 +458,14 @@ button {
 .white-eval {
   width: 100%;
   height: 50%;
-  background: #e7edf1;
+  background: var(--cd-eval-white);
   transition: height 200ms ease;
 }
 
 .black-eval {
   flex: 1;
   width: 100%;
-  background: #33414d;
-}
-
-body.theme-light .white-eval {
-  background: #f8fafb;
-}
-
-body.theme-light .black-eval {
-  background: #455563;
+  background: var(--cd-eval-black);
 }
 
 /* ---------- Review / Analysis tabs ---------- */
@@ -515,19 +527,26 @@ body.theme-light .black-eval {
 
 /* ---------- Player accuracy summary ---------- */
 
-.player-accuracy-section {
-  flex: 0 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-
-  padding: 14px 22px;
+/* Wrapper = the card that sits under the tabs. It holds the accuracy row
+   and the best-move row, so the panel look lives here. */
+.player-accuracy-best-move-section {
   background: var(--cd-panel);
   border: 1px solid var(--cd-border);
   border-top: 0;
-  border-radius: 0;
-  box-shadow: none;
+}
+
+/* If JS hides every child, hide the empty card too (no stray border). */
+.player-accuracy-best-move-section:not(:has(> :not(.is-hidden))) {
+  display: none;
+}
+
+.player-accuracy-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* two equal halves */
+  align-items: center;
+  justify-items: center;
+  gap: 12px;
+  padding: 14px 22px;
 }
 
 .player-accuracy-section > div {
@@ -564,6 +583,11 @@ body.theme-light .black-eval {
   white-space: nowrap;
 }
 
+/* If you add a .game-scoreline between the players, use 3 columns again. */
+.player-accuracy-section:has(.game-scoreline) {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
 /* ---------- Panels (shared look) ---------- */
 
 .section-graph-or-engine-line,
@@ -576,7 +600,7 @@ body.theme-light .black-eval {
   box-shadow: var(--cd-shadow);
 }
 
-/* ---------- Graph / engine-line panel (fixed height) ---------- */
+/* ---------- Graph / engine-line / best-move panel ---------- */
 
 .section-graph-or-engine-line {
   flex: 0 0 auto;
@@ -584,47 +608,297 @@ body.theme-light .black-eval {
   border-radius: 0 0 var(--cd-radius) var(--cd-radius);
 }
 
-.eval-graph-section {
+/* =========================================================
+   ANALYSIS TAB — ENGINE LINES   (WintrChess-style)
+
+   .engine-line-section
+     .engine-depth                      (optional  "Depth: 16")
+     .engine-line  [.is-expanded]
+       .engine-eval  [.is-negative]     white pill with the score
+       .move-plies > .move-ply          one line of moves, fades out at the end
+       .hide-show-line-svg              chevron, rotates when expanded
+   ========================================================= */
+
+.engine-line-section {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px 6px;
+}
+
+.engine-depth {
+  padding: 0 2px 6px;
+  color: var(--cd-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.engine-line {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 22px;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 42px;
+  padding: 6px 0;
+}
+
+.engine-line + .engine-line {
+  border-top: 1px solid var(--cd-border);
+}
+
+/* Score pill: white with black text. Add .is-negative when Black is better. */
+.engine-eval {
+  min-width: 54px;
+  padding: 3px 8px;
+  color: var(--cd-bg);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: #ffffff;
+  border-radius: 6px;
+}
+
+.engine-eval.is-negative {
+  color: #ffffff;
+  background: var(--cd-eval-black);
+  box-shadow: inset 0 0 0 1px var(--cd-border);
+}
+
+/* One line, no wrapping; the tail fades instead of being cut off. */
+.move-plies {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 2px 8px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - 26px),
+    transparent
+  );
+  mask-image: linear-gradient(to right, #000 calc(100% - 26px), transparent);
+}
+
+.move-ply {
+  padding: 2px 4px;
+  color: var(--cd-text);
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.move-ply:hover {
+  background: var(--cd-accent-soft);
+}
+
+/* Chevron. The SVG in the HTML has an inline black fill, so it is
+   overridden here with !important to follow the text colour. */
+.hide-show-line-svg {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  color: var(--cd-text-secondary);
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 180ms ease;
+}
+
+.hide-show-line-svg:hover {
+  color: var(--cd-accent);
+  background: var(--cd-accent-soft);
+}
+
+.hide-show-line-svg svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+.hide-show-line-svg svg path {
+  fill: currentColor !important;
+}
+
+/* Expanded: show the whole line, wrapped. Toggle .is-expanded from JS. */
+.engine-line.is-expanded {
+  align-items: start;
+}
+
+.engine-line.is-expanded .engine-eval,
+.engine-line.is-expanded .hide-show-line-svg {
+  margin-top: 1px;
+}
+
+.engine-line.is-expanded .move-plies {
+  flex-wrap: wrap;
+  overflow: visible;
+  white-space: normal;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.engine-line.is-expanded .hide-show-line-svg {
+  transform: rotate(180deg);
+}
+
+/* Safety net: a chevron placed directly inside the section (outside an
+   .engine-line) would break the layout, so it is hidden. */
+.engine-line-section > .hide-show-line-svg {
+  display: none;
+}
+
+/* =========================================================
+   GRAPH  (Review tab)
+
+   .eval-graph-section > #eval-graph
+   ========================================================= */
+
+#eval-graph {
+  flex: 0 0 auto;
+  width: 100%;
   height: 170px;
   padding: 14px 18px;
 }
 
-#eval-graph {
+/* =========================================================
+   BEST-MOVE ROW   (WintrChess-style, inside the top card)
+
+   .best-move-section  [.is-best …]
+     .curr-move-descrip
+       .curr-move-icon                  empty = hidden; JS drops an <svg> in
+       .curr-move-text                  "Nf3 is best"
+     .best-move                         hide with .is-hidden when the move WAS best
+       .best-move-btn                   "D5"
+   .opening-name                        (optional footer band, sibling after)
+
+   Put ONE classification class on .best-move-section from JS and the
+   headline + sentence take that colour:
+   is-brilliant | is-great | is-book | is-best | is-excellent |
+   is-good | is-inaccuracy | is-mistake | is-blunder
+   No class = white / grey.
+   ========================================================= */
+
+.best-move-section {
+  display: grid;
+  gap: 6px;
+  padding: 16px 18px;
+  text-align: left;
+  background: var(--cd-panel-raised);
+}
+
+/* Hairline only when there is an accuracy row above it. */
+.player-accuracy-section:not(.is-hidden) + .best-move-section {
+  border-top: 1px solid var(--cd-border);
+}
+
+.curr-move-descrip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--move-color, var(--cd-text));
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.curr-move-icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  display: grid;
+  place-items: center;
+}
+
+.curr-move-icon:empty {
+  display: none;
+}
+
+.curr-move-icon svg {
+  display: block;
   width: 100%;
   height: 100%;
 }
 
-/* Engine PV lines — same 170px box so the layout doesn't jump on toggle;
-   scrolls inside if there are many lines. */
-
-.engine-line-section {
-  height: 170px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px 22px;
+.best-move {
+  color: var(--move-color, var(--cd-text-secondary));
+  font-size: 14px;
+  line-height: 1.4;
 }
 
-.engine-line {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-height: 44px;
+.best-move-btn {
+  padding: 1px 3px;
+  margin: 0 -3px;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 150ms ease;
 }
 
-.move-ply {
-  min-width: 42px;
-  padding: 9px 12px;
-  color: var(--cd-text);
+.best-move-btn:hover {
+  background: var(--cd-accent-soft);
+}
+
+/* Optional footer band: opening name, e.g. "Slav Defense: Modern Line". */
+.opening-name {
+  padding: 11px 18px;
+  color: var(--cd-text-secondary);
   text-align: center;
   font-size: 14px;
-  font-weight: 600;
-  background: var(--cd-panel-raised);
-  border: 1px solid var(--cd-border);
-  border-radius: 7px;
+  background: var(--cd-panel);
+  border-top: 1px solid var(--cd-border-soft);
+}
+
+/* Classification colours (match the .num-move-* counts) */
+.best-move-section.is-brilliant {
+  --move-color: #11b9b1;
+}
+.best-move-section.is-great {
+  --move-color: var(--cd-blue);
+}
+.best-move-section.is-book {
+  --move-color: #b78a67;
+}
+.best-move-section.is-best,
+.best-move-section.is-excellent {
+  --move-color: #45bd79;
+}
+.best-move-section.is-good {
+  --move-color: #69c987;
+}
+.best-move-section.is-inaccuracy {
+  --move-color: #e5b52d;
+}
+.best-move-section.is-mistake {
+  --move-color: #ef862d;
+}
+.best-move-section.is-blunder {
+  --move-color: #e34b4b;
+}
+
+/* strict-mono: drop the classification colour here too */
+body.strict-mono .best-move-section {
+  --move-color: initial;
+}
+
+/* Keyboard focus, for when these get tabindex / become buttons */
+.move-ply:focus-visible,
+.best-move-btn:focus-visible,
+.hide-show-line-svg:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: 2px;
 }
 
 /* ---------- Bottom panel (natural height, NOT scrollable itself) ----------
@@ -719,6 +993,8 @@ body.theme-light .black-eval {
   grid-template-rows: repeat(9, var(--cd-row-h));
   padding-top: var(--cd-head-h); /* aligns with the counts columns */
   min-width: 0;
+  max-width: 100%;
+  justify-self: center; /* centre the block; icons stay aligned in a column */
 }
 
 .move-type {
@@ -812,7 +1088,8 @@ body.theme-light .black-eval {
 .white-ply.is-current-ply,
 .black-ply.is-current-ply {
   color: var(--cd-accent);
-  background: var(--cd-accent-soft);
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.16);
 }
 
 /* ---------- Scrollbars ---------- */
@@ -895,8 +1172,8 @@ body.theme-light .black-eval {
   }
 
   .app-logo svg {
-    width: 27px;
-    height: 27px;
+    width: 20px;
+    height: 20px;
   }
 
   .app-title {
@@ -954,8 +1231,20 @@ body.theme-light .black-eval {
     font-size: 17px;
   }
 
-  .eval-graph-section {
+  #eval-graph {
     padding: 10px;
+  }
+
+  .engine-line-section {
+    padding: 8px 12px 4px;
+  }
+
+  .curr-move-descrip {
+    font-size: 18px;
+  }
+
+  .best-move-section {
+    padding: 14px;
   }
 
   .move-classification-section {
@@ -987,32 +1276,18 @@ body.theme-light .black-eval {
    FINAL LAYOUT OVERRIDES
    ========================================================= */
 
-/* Restore the board's intended width by reclaiming the space
-   used by the vertical evaluation bar and its column gap. */
-.chessboard-section {
-  width: calc(100% + var(--cd-eval-w) + var(--cd-eval-gap));
-}
-
-/* The complete right-hand column is the single scroll container. */
-.game-review-analysis-section {
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  gap: 0;
-}
-
-/* Do not create a separate scroll area for the move list. */
+/* No separate scroll areas inside the right column —
+   the whole column scrolls. */
 .move-list-section {
   max-height: none;
   overflow: visible;
 }
 
-/* Classification stays at natural height; right column handles scrolling. */
 .section-move-classification-or-move-list {
   overflow: visible;
 }
 
-/* Keep the Review/Analysis tabs flush with the graph/engine panel. */
+/* Tabs flush with the accuracy card and graph/engine panel. */
 .choose-review-analysis {
   margin-bottom: 0;
   border-radius: var(--cd-radius) var(--cd-radius) 0 0;
@@ -1025,10 +1300,6 @@ body.theme-light .black-eval {
 }
 
 /* Compact board navigation controls. */
-.board-nav-bar {
-  gap: 6px;
-}
-
 .board-nav-btn {
   height: 30px;
   border-radius: 7px;
@@ -1039,12 +1310,18 @@ body.theme-light .black-eval {
   height: 17px;
 }
 
-@media (max-width: 600px) {
-  /* Prevent the board from extending beyond the viewport on mobile. */
-  .chessboard-section {
+/* Stacked layout: normal page scroll, right panel at full width.
+   The nav bar stays sticky to the bottom of the screen. */
+@media (max-width: 1050px) {
+  .game-review-analysis-section {
     width: 100%;
+    height: auto;
+    max-height: none;
+    overflow: visible;
   }
+}
 
+@media (max-width: 600px) {
   .board-nav-btn {
     height: 30px;
   }
@@ -1052,5 +1329,129 @@ body.theme-light .black-eval {
   .nav-btn-svg {
     width: 16px;
     height: 16px;
+  }
+}
+
+/* ---------- Chessboard squares ----------
+   Wire these to whatever your <chess-board> renders.
+   .sq.l / .sq.d  = light / dark square, .hl = last-move highlight.
+   Prefixed with "chess-board" so they win over any later .sq rules. */
+
+chess-board .pv-board {
+  grid-template-rows: repeat(
+    8,
+    minmax(0, 1fr)
+  ); /* keep empty ranks full height */
+}
+
+chess-board .sq.l {
+  background: var(--cd-sq-light);
+  color: #111111;
+}
+
+chess-board .sq.d {
+  background: var(--cd-sq-dark);
+  color: #111111;
+}
+
+chess-board .sq.l.hl {
+  background: var(--cd-sq-light-hl);
+}
+
+chess-board .sq.d.hl {
+  background: var(--cd-sq-dark-hl);
+}
+
+/* ---------- Evaluation graph (SVG inside #eval-graph) ---------- */
+
+#eval-graph svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#eval-graph line {
+  stroke: var(--cd-graph-axis);
+  stroke-opacity: 1;
+}
+
+#eval-graph path[fill="none"] {
+  stroke: var(--cd-graph-line);
+}
+
+#eval-graph path:not([fill="none"]) {
+  fill: var(--cd-graph-fill);
+  fill-opacity: 1;
+}
+
+/* ---------- Keyboard focus (white ring on black) ---------- */
+
+.landing-page-link:focus-visible,
+.white-ply:focus-visible,
+.black-ply:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- OPTIONAL: strict greyscale ----------
+   The mockup keeps the move-classification colours. To drop them
+   too, add class="strict-mono" to <body>. */
+
+body.strict-mono .move-symbol svg,
+body.strict-mono .num-moves {
+  filter: grayscale(1);
+}
+
+/* =========================================================
+   JS STATE CLASSES  (toggle these with classList)
+
+   .is-hidden        any section              display: none
+   .is-active        .choose-btn              selected tab
+   .is-expanded      .engine-line             full line, wrapped
+   .is-negative      .engine-eval             Black is better
+   .is-loading       .engine-line-section     dims lines while the engine thinks
+   .is-<class>       .best-move-section       classification colour (see above)
+   .is-current-ply   .ply                     highlights the current move
+   .is-playing       .play-btn                swaps the play icon for pause
+   :disabled / .is-disabled  .board-nav-btn   greyed out, not clickable
+   ========================================================= */
+
+.engine-line-section .engine-line {
+  transition: opacity 180ms ease;
+}
+
+.engine-line-section.is-loading .engine-line {
+  opacity: 0.4;
+}
+
+/* Nav buttons: disable at the first / last move. */
+.board-nav-btn:disabled,
+.board-nav-btn.is-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Play / pause: both icons live in the button, CSS shows one. */
+.play-btn .pause-icon {
+  display: none;
+}
+
+.play-btn.is-playing .play-icon {
+  display: none;
+}
+
+.play-btn.is-playing .pause-icon {
+  display: grid;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

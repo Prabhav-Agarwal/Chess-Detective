@@ -92,78 +92,7 @@
               <span class="player-rating player-2-rating">(1000)</span>
             </div>
           </section>
-          <section class="board-nav-bar">
-            <button class="board-nav-btn first-move-btn">
-              <span class="nav-btn-svg"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M5 4V20M19 5L11 12L19 19"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  /></svg
-              ></span>
-            </button>
-            <button class="board-nav-btn previous-move-btn">
-              <span class="nav-btn-svg"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M15 5L8 12L15 19"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  /></svg
-              ></span>
-            </button>
-            <button class="board-nav-btn play-btn">
-              <span class="nav-btn-svg"
-                ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path d="M7 4.5V19.5L19 12L7 4.5Z" fill="currentColor" /></svg
-              ></span>
-            </button>
-            <button class="board-nav-btn next-move-btn">
-              <span class="nav-btn-svg"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M9 5L16 12L9 19"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  /></svg
-              ></span>
-            </button>
-            <button class="board-nav-btn last-move-btn">
-              <span class="nav-btn-svg"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path
-                    d="M19 4V20M5 5L13 12L5 19"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  /></svg
-              ></span>
-            </button>
-          </section>
+
           <section class="eval-bar">
             <div class="white-eval"></div>
             <div class="black-eval"></div>
@@ -176,43 +105,164 @@
               Analysis
             </section>
           </section>
-          <section class="player-accuracy-section">
-            <div>
-              <img src="" alt="" class="player-avatar player-1-avatar" />
-              <div class="player-username player-1-username">Player 1</div>
-              <div class="player-accuracy">100%</div>
+          <section class="player-accuracy-best-move-section">
+            <div class="player-accuracy-section">
+              <div class="player-1-accuracy-section">
+                <img src="" alt="" class="player-avatar player-1-avatar" />
+                <div class="player-accuracy player-1-accuracy">100%</div>
+              </div>
+              <div class="player-2-accuracy-section">
+                <img src="" alt="" class="player-avatar player-2-avatar" />
+                <div class="player-accuracy player-2-accuracy">100%</div>
+              </div>
             </div>
-            <div class="game-scoreline">1/2-1/2</div>
-            <div>
-              <img src="" alt="" class="player-avatar player-2-avatar" />
-              <div class="player-username player-2-username">Player 2</div>
-              <div class="player-accuracy">100%</div>
+            <!-- JS: add ONE of  is-brilliant is-great is-book is-best is-excellent
+                 is-good is-inaccuracy is-mistake is-blunder  to this element -->
+            <div class="best-move-section">
+              <div class="curr-move-descrip">
+                <span class="curr-move-icon"></span>
+                <span class="curr-move-text">Nf3 is best</span>
+              </div>
+              <!-- JS: add is-hidden when the move played WAS the best move -->
+              <div class="best-move">
+                The best move was <span class="best-move-btn">D5</span>
+              </div>
             </div>
           </section>
           <section class="section-graph-or-engine-line">
-            <section class="engine-line-section is-hidden">
+            <!-- JS: add is-loading while the engine is thinking -->
+            <section class="engine-line-section">
+              <div class="engine-depth">
+                Depth: <span class="engine-depth-value">16</span>
+              </div>
+              <!-- JS: is-expanded on .engine-line (toggle from the chevron);
+                   is-negative on .engine-eval when Black is better -->
               <div class="engine-line engine-line-1">
-                <div class="move-ply">e4</div>
-                <div class="move-ply">e5</div>
-                <div class="move-ply">Nf3</div>
-                <div class="move-ply">Nf6</div>
-                <div class="move-ply">e5</div>
+                <div class="engine-eval engine-eval-line-1">+1.2</div>
+                <div class="move-plies move-plies-line-1">
+                  <div class="move-ply">e4</div>
+                  <div class="move-ply">e5</div>
+                  <div class="move-ply">Nf3</div>
+                  <div class="move-ply">Nf6</div>
+                  <div class="move-ply">e5</div>
+                </div>
+                <span
+                  class="hide-show-line-svg"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                  aria-label="Show full line"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    version="1.1"
+                    width="256"
+                    height="256"
+                    viewBox="0 0 256 256"
+                    xml:space="preserve"
+                  >
+                    <g
+                      style="
+                        stroke: none;
+                        stroke-width: 0;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: none;
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+                    >
+                      <path
+                        d="M 90 24.25 c 0 -0.896 -0.342 -1.792 -1.025 -2.475 c -1.366 -1.367 -3.583 -1.367 -4.949 0 L 45 60.8 L 5.975 21.775 c -1.367 -1.367 -3.583 -1.367 -4.95 0 c -1.366 1.367 -1.366 3.583 0 4.95 l 41.5 41.5 c 1.366 1.367 3.583 1.367 4.949 0 l 41.5 -41.5 C 89.658 26.042 90 25.146 90 24.25 z"
+                        style="
+                          stroke: none;
+                          stroke-width: 1;
+                          stroke-dasharray: none;
+                          stroke-linecap: butt;
+                          stroke-linejoin: miter;
+                          stroke-miterlimit: 10;
+                          fill: rgb(0, 0, 0);
+                          fill-rule: nonzero;
+                          opacity: 1;
+                        "
+                        transform=" matrix(1 0 0 1 0 0) "
+                        stroke-linecap="round"
+                      />
+                    </g>
+                  </svg>
+                </span>
               </div>
               <div class="engine-line engine-line-2">
-                <div class="move-ply">e4</div>
-                <div class="move-ply">e5</div>
-                <div class="move-ply">Nf3</div>
-                <div class="move-ply">Nf6</div>
-                <div class="move-ply">e5</div>
+                <div class="engine-eval engine-eval-line-2">+1.0</div>
+                <div class="move-plies move-plies-line-2">
+                  <div class="move-ply">e4</div>
+                  <div class="move-ply">e5</div>
+                  <div class="move-ply">Nf3</div>
+                  <div class="move-ply">Nf6</div>
+                  <div class="move-ply">e5</div>
+                </div>
+                <span
+                  class="hide-show-line-svg"
+                  role="button"
+                  tabindex="0"
+                  aria-expanded="false"
+                  aria-label="Show full line"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    version="1.1"
+                    width="256"
+                    height="256"
+                    viewBox="0 0 256 256"
+                    xml:space="preserve"
+                  >
+                    <g
+                      style="
+                        stroke: none;
+                        stroke-width: 0;
+                        stroke-dasharray: none;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-miterlimit: 10;
+                        fill: none;
+                        fill-rule: nonzero;
+                        opacity: 1;
+                      "
+                      transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+                    >
+                      <path
+                        d="M 90 24.25 c 0 -0.896 -0.342 -1.792 -1.025 -2.475 c -1.366 -1.367 -3.583 -1.367 -4.949 0 L 45 60.8 L 5.975 21.775 c -1.367 -1.367 -3.583 -1.367 -4.95 0 c -1.366 1.367 -1.366 3.583 0 4.95 l 41.5 41.5 c 1.366 1.367 3.583 1.367 4.949 0 l 41.5 -41.5 C 89.658 26.042 90 25.146 90 24.25 z"
+                        style="
+                          stroke: none;
+                          stroke-width: 1;
+                          stroke-dasharray: none;
+                          stroke-linecap: butt;
+                          stroke-linejoin: miter;
+                          stroke-miterlimit: 10;
+                          fill: rgb(0, 0, 0);
+                          fill-rule: nonzero;
+                          opacity: 1;
+                        "
+                        transform=" matrix(1 0 0 1 0 0) "
+                        stroke-linecap="round"
+                      />
+                    </g>
+                  </svg>
+                </span>
               </div>
             </section>
-            <section class="eval-graph-section">
+            <section class="eval-graph-section is-hidden">
               <div id="eval-graph"></div>
             </section>
           </section>
 
           <section class="section-move-classification-or-move-list">
-            <section class="move-classification-section">
+            <section class="move-classification-section is-hidden">
               <section class="player-1-move-classification">
                 <div class="player-username player-1-username">Player 1</div>
                 <div class="for-player-1 num-moves num-move-brilliant">0</div>
@@ -394,25 +444,113 @@
                 <div class="for-player-2 num-moves num-move-blunder">0</div>
               </section>
             </section>
-            <section class="move-list-section is-hidden">
+            <section class="move-list-section">
+              <!-- JS: add is-current-ply to the active .ply -->
               <ul class="move-list">
                 <li class="move-row">
                   <div class="move-num">1</div>
-                  <div class="white-ply">d4</div>
-                  <div class="black-ply">d5</div>
+                  <div class="ply white-ply" data-ply="1">d4</div>
+                  <div class="ply black-ply" data-ply="2">d5</div>
                 </li>
                 <li class="move-row">
                   <div class="move-num">2</div>
-                  <div class="white-ply">c4</div>
-                  <div class="black-ply">e6</div>
+                  <div class="ply white-ply" data-ply="3">c4</div>
+                  <div class="ply black-ply" data-ply="4">e6</div>
                 </li>
                 <li class="move-row">
                   <div class="move-num">3</div>
-                  <div class="white-ply">Nc3</div>
-                  <div class="black-ply">Nf6</div>
+                  <div class="ply white-ply" data-ply="5">Nc3</div>
+                  <div class="ply black-ply" data-ply="6">Nf6</div>
                 </li>
               </ul>
             </section>
+          </section>
+          <section class="board-nav-bar">
+            <button
+              class="board-nav-btn first-move-btn"
+              aria-label="First move"
+            >
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M5 4V20M19 5L11 12L19 19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <button
+              class="board-nav-btn previous-move-btn"
+              aria-label="Previous move"
+            >
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M15 5L8 12L15 19"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <!-- JS: .play-btn.is-playing swaps play for pause. On the other four
+                 buttons set .disabled = true at the ends of the game. -->
+            <button class="board-nav-btn play-btn" aria-label="Play / pause">
+              <span class="nav-btn-svg play-icon"
+                ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M7 4.5V19.5L19 12L7 4.5Z" fill="currentColor" /></svg
+              ></span>
+              <span class="nav-btn-svg pause-icon"
+                ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path
+                    d="M7 5h3.5v14H7V5ZM13.5 5H17v14h-3.5V5Z"
+                    fill="currentColor"
+                  /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn next-move-btn" aria-label="Next move">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M9 5L16 12L9 19"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
+            <button class="board-nav-btn last-move-btn" aria-label="Last move">
+              <span class="nav-btn-svg"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M19 4V20M5 5L13 12L5 19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></span>
+            </button>
           </section>
         </section>
       </main>
