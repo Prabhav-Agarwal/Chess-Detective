@@ -17,11 +17,12 @@
       src="src/scripts/controllers/gameController.js"
       type="module"
     ></script>
+    <style class="styles"></style>
   </head>
   <body>
     <!-- ===== REVIEW LOADING OVERLAY ===== -->
     <div
-      class="review-overlay"
+      class="review-overlay is-hidden"
       id="review-overlay"
       role="status"
       aria-live="polite"
@@ -140,6 +141,37 @@
               <div class="row-num">8</div>
             </div>
             <chess-board id="chess-board"></chess-board>
+            <div class="square-icons-overlay"></div>
+            <button
+              type="button"
+              class="board-orientation-btn"
+              id="board-orientation-btn"
+              aria-label="Flip board orientation"
+              title="Flip board"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                class="orientation-btn-icon"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 12a8 8 0 1 0 2.34-5.66L4 8.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M4 4.5v4h4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
             <div class="col-labels">
               <div class="col-num">a</div>
               <div class="col-num">b</div>
@@ -166,25 +198,25 @@
         </section>
         <section class="game-review-analysis-section">
           <section class="choose-review-analysis">
-            <section class="choose-btn view-review-btn">Review</section>
-            <section class="choose-btn view-analysis-btn is-active">
-              Analysis
+            <section class="choose-btn view-review-btn is-active">
+              Review
             </section>
+            <section class="choose-btn view-analysis-btn">Analysis</section>
           </section>
           <section class="player-accuracy-best-move-section">
             <div class="player-accuracy-section">
               <div class="player-1-accuracy-section">
                 <img src="" alt="" class="player-avatar player-1-avatar" />
-                <div class="player-accuracy player-1-accuracy">100%</div>
+                <div class="player-accuracy player-1-accuracy">N/A</div>
               </div>
               <div class="player-2-accuracy-section">
                 <img src="" alt="" class="player-avatar player-2-avatar" />
-                <div class="player-accuracy player-2-accuracy">100%</div>
+                <div class="player-accuracy player-2-accuracy">N/A</div>
               </div>
             </div>
             <!-- JS: add ONE of  is-brilliant is-great is-book is-best is-excellent
                  is-good is-inaccuracy is-mistake is-blunder  to this element -->
-            <div class="best-move-section">
+            <div class="best-move-section is-hidden">
               <div class="curr-move-descrip">
                 <span class="curr-move-icon"></span>
                 <span class="curr-move-text">Nf3 is best</span>
@@ -345,6 +377,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="brilliant"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -358,6 +391,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="great"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -371,6 +405,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="book"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -393,6 +428,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="best"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -406,6 +442,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="excellent"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -419,6 +456,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="good"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -436,6 +474,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="inaccuracy"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -457,6 +496,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="mistake"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >
@@ -478,6 +518,7 @@
                 <div class="move-type">
                   <span class="move-symbol"
                     ><svg
+                      class="blunder"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 32 32"
                     >

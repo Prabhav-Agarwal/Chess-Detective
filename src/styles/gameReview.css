@@ -50,7 +50,7 @@
 
   /* Evaluation graph */
   --cd-graph-line: #ffffff;
-  --cd-graph-fill: rgba(255, 255, 255, 0.14);
+  --cd-graph-fill: rgba(255, 255, 255);
   --cd-graph-axis: rgba(255, 255, 255, 0.22);
 
   /* Layout sizing */
@@ -764,15 +764,33 @@ button {
 #eval-graph {
   flex: 0 0 auto;
   width: 100%;
-  height: 170px;
-  padding: 14px 18px;
+  height: 120px;
+  padding: 0;
+  background: linear-gradient(#000 50%, #fff 50%);
+}
+
+#eval-graph .apexcharts-yaxis-annotations line {
+  shape-rendering: crispEdges;
+}
+
+#eval-graph svg {
+  animation: graph-reveal 1.2s ease-out;
+}
+
+@keyframes graph-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 /* =========================================================
    BEST-MOVE ROW   (WintrChess-style, inside the top card)
 
-   .best-move-section  [.is-best …]
-     .curr-move-descrip
+   .best-move-section  
+     .curr-move-descrip [.is-best …]
        .curr-move-icon                  empty = hidden; JS drops an <svg> in
        .curr-move-text                  "Nf3 is best"
      .best-move                         hide with .is-hidden when the move WAS best
@@ -829,7 +847,7 @@ button {
 }
 
 .best-move {
-  color: var(--move-color, var(--cd-text-secondary));
+  color: #45bd79;
   font-size: 14px;
   line-height: 1.4;
 }
@@ -862,29 +880,29 @@ button {
 }
 
 /* Classification colours (match the .num-move-* counts) */
-.best-move-section.is-brilliant {
+.curr-move-descrip.is-brilliant {
   --move-color: #11b9b1;
 }
-.best-move-section.is-great {
+.curr-move-descrip.is-great {
   --move-color: var(--cd-blue);
 }
-.best-move-section.is-book {
+.curr-move-descrip.is-book {
   --move-color: #b78a67;
 }
-.best-move-section.is-best,
-.best-move-section.is-excellent {
+.curr-move-descrip.is-best,
+.curr-move-descrip.is-excellent {
   --move-color: #45bd79;
 }
-.best-move-section.is-good {
+.curr-move-descrip.is-good {
   --move-color: #69c987;
 }
-.best-move-section.is-inaccuracy {
+.curr-move-descrip.is-inaccuracy {
   --move-color: #e5b52d;
 }
-.best-move-section.is-mistake {
+.curr-move-descrip.is-mistake {
   --move-color: #ef862d;
 }
-.best-move-section.is-blunder {
+.curr-move-descrip.is-blunder {
   --move-color: #e34b4b;
 }
 
@@ -1370,20 +1388,6 @@ chess-board .sq.d.hl {
   height: 100%;
 }
 
-#eval-graph line {
-  stroke: var(--cd-graph-axis);
-  stroke-opacity: 1;
-}
-
-#eval-graph path[fill="none"] {
-  stroke: var(--cd-graph-line);
-}
-
-#eval-graph path:not([fill="none"]) {
-  fill: var(--cd-graph-fill);
-  fill-opacity: 1;
-}
-
 /* ---------- Keyboard focus (white ring on black) ---------- */
 
 .landing-page-link:focus-visible,
@@ -1600,4 +1604,82 @@ body.strict-mono .num-moves {
 .review-ring-runner {
   animation: review-ring-run 1.8s linear infinite !important;
   stroke-dasharray: 24 76 !important;
+}
+
+/* Reserve a small column beside the board */
+.chessboard-wrapper {
+  grid-template-columns: var(--cd-label) minmax(0, 1fr) 28px;
+  width: calc(100% + 28px);
+}
+
+/* Keep board and coordinate labels in column 2 */
+#chess-board,
+.col-labels {
+  grid-column: 2;
+}
+
+/* Orientation button sits beside the board */
+.board-orientation-btn {
+  grid-column: 3;
+  grid-row: 1;
+
+  align-self: center;
+  justify-self: center;
+
+  width: 26px;
+  height: 26px;
+  padding: 0;
+
+  display: grid;
+  place-items: center;
+
+  color: var(--cd-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  transition:
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.board-orientation-btn:hover {
+  color: var(--cd-accent);
+  transform: scale(1.12);
+}
+
+.board-orientation-btn:active {
+  transform: scale(0.95);
+}
+
+.board-orientation-btn:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: 2px;
+  border-radius: 50%;
+}
+
+.orientation-btn-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+/* CSS for move classification icon over  square on which peice moved */
+.chessboard-wrapper {
+  position: relative;
+}
+
+.square-icons-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.square-move-icon {
+  position: absolute;
+  width: 25%;
+  height: 25%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }

@@ -62,3 +62,22 @@ export const CHESSCOM_GAMES_REQUEST_URL = `https://api.chess.com/pub/player/`;
 export const MIN_GAMES_TO_FETCH = 75;
 export const CURR_YEAR = new Date().getFullYear();
 export const CURR_MONTH = new Date().getMonth() + 1;
+
+//Move-colors
+export const MOVE_COLORS = {
+  // Board highlights (chess.com-style yellow overlay)
+  COLOR_LAST_MOVE: "rgba(180, 180, 180, 0.60)",
+  COLOR_SELECTED_SQUARE: "rgba(255, 255, 51, 0.60)",
+  COLOR_BOOK: "rgba(168, 136, 101, 0.55)",
+
+  // Move classifications (chess.com hexes with overlay alpha)
+  COLOR_GREAT: "rgba(92, 139, 176, 0.65)", // #5c8bb0
+  COLOR_BRILLIANT: "rgba(27, 172, 166, 0.65)", // #1baca6
+  COLOR_BEST: "rgba(129, 182, 76, 0.65)", // #81b64c
+  COLOR_EXCELLENT: "rgba(150, 188, 75, 0.60)", // #96bc4b
+  COLOR_GOOD: "rgba(150, 175, 139, 0.60)", // #96af8b
+  COLOR_INACCURACY: "rgba(247, 198, 49, 0.65)", // #f7c631
+  COLOR_MISTAKE: "rgba(255, 164, 89, 0.65)", // #ffa459
+  COLOR_MISS: "rgba(255, 119, 105, 0.65)", // #ff7769
+  COLOR_BLUNDER: "rgba(250, 65, 45, 0.65)", // #fa412d
+};
