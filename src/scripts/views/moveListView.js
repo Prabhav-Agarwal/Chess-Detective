@@ -42,21 +42,22 @@ class MoveListSection extends View {
       //guard clause
       if (!target) return;
 
-      this.#removeCurrPlyHighlight();
-      this.#selectedPly = target;
+      this.removeCurrPlyHighlight();
 
-      this.#highlightCurrPly();
+      this.#highlightCurrPly(target);
 
       const plyNum = target.dataset.plyNum;
       handler(plyNum);
     });
   }
 
-  #highlightCurrPly() {
+  #highlightCurrPly(targetPly) {
+    this.#selectedPly = targetPly;
     this.#selectedPly.classList.add("is-current-ply");
   }
-  #removeCurrPlyHighlight() {
+  removeCurrPlyHighlight() {
     if (!this.#selectedPly) return;
+    this.#selectedPly = null;
     this.#selectedPly.classList.remove("is-current-ply");
   }
 }

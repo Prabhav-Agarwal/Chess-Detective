@@ -11,14 +11,14 @@ class BestMoveSection extends View {
     return this.#parentElement;
   }
 
-  #generateHtmlStr({ currMove, classification, bestMove }) {
+  #generateHtmlStr({ currPly, plyNum, classification, bestMove }) {
     return `
         <div class="curr-move-descrip ${`is-${classification}` || ""}">
             <span class="curr-move-icon"></span>
-            <span class="curr-move-text">${move} is ${classification}</span>
+            <span class="curr-move-text">${currPly} is ${classification}</span>
         </div>
-        <div class="best-move ${currMove === bestMove ? "is-hidden" : ""}">
-            The best move was <span class="best-move-btn">${bestMove}</span>
+        <div class="best-move ${currPly === bestMove ? "is-hidden" : ""}">
+            The best move was <span class="best-move-btn" data-ply-num="${plyNum}">${bestMove}</span>
         </div>
     `;
   }
@@ -36,10 +36,14 @@ class BestMoveSection extends View {
     container.append(svg);
   }
 
-  addHandlerBestMove(handler) {
-    const bestMoveBtn = document.querySelector(".best-move-btn");
-    bestMoveBtn.addEventListener("click", (e) => {
-      handler(); ////////////////////////// Something to add................................
+  addHandlerRenderPosition(handler) {
+    this.#parentElement.addEventListener("click", (event) => {
+      const target = event.target.closest(".best-move-btn");
+      //guard clause
+      if (!target) return;
+
+      const plyNum = target.dataset.plyNum;
+      handler(plyNum);
     });
   }
 }

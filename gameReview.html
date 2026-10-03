@@ -122,11 +122,15 @@
       </header>
       <main class="game-reviw-page-body">
         <section class="chessboard-section">
-          <section class="player-descrip player-1-descrip">
-            <img src="" alt="" class="player-avatar player-1-avtar" />
-            <div class="player-info player-1-info">
-              <span class="player-username player-1-username">Player 1</span>
-              <span class="player-rating player-1-rating">(1000)</span>
+          <section class="player-descrip black-descrip">
+            <img
+              src="./src/assets/avatars/placeholder-avatar-black.svg"
+              alt="black-avatar"
+              class="player-avatar black-avatar"
+            />
+            <div class="player-info black-info">
+              <span class="player-username black-username">Player 2</span>
+              <span class="player-rating black-rating">(1000)</span>
             </div>
           </section>
           <section class="chessboard-wrapper">
@@ -183,17 +187,25 @@
               <div class="col-num">h</div>
             </div>
           </section>
-          <section class="player-descrip player-2-descrip">
-            <img src="" alt="" class="player-avatar player-2-avtar" />
-            <div class="player-info player-2-info">
-              <span class="player-username player-2-username">Player 2</span>
-              <span class="player-rating player-2-rating">(1000)</span>
+          <section class="player-descrip white-descrip">
+            <img
+              src="./src/assets/avatars/placeholder-avatar-white.svg"
+              alt="white-avatar"
+              class="player-avatar white-avatar"
+            />
+            <div class="player-info white-info">
+              <span class="player-username white-username">Player 1</span>
+              <span class="player-rating white-rating">(1000)</span>
             </div>
           </section>
 
           <section class="eval-bar">
-            <div class="white-eval"></div>
-            <div class="black-eval"></div>
+            <div class="eval-bar-track">
+              <div class="white-eval"></div>
+              <div class="black-eval"></div>
+            </div>
+
+            <span class="curr-eval-value">+0.00</span>
           </section>
         </section>
         <section class="game-review-analysis-section">
@@ -205,13 +217,21 @@
           </section>
           <section class="player-accuracy-best-move-section">
             <div class="player-accuracy-section">
-              <div class="player-1-accuracy-section">
-                <img src="" alt="" class="player-avatar player-1-avatar" />
-                <div class="player-accuracy player-1-accuracy">N/A</div>
+              <div class="white-accuracy-section">
+                <img
+                  src="./src/assets/avatars/placeholder-avatar-white.svg"
+                  alt="white-avatar"
+                  class="player-avatar white-avatar"
+                />
+                <div class="player-accuracy white-accuracy">N/A</div>
               </div>
-              <div class="player-2-accuracy-section">
-                <img src="" alt="" class="player-avatar player-2-avatar" />
-                <div class="player-accuracy player-2-accuracy">N/A</div>
+              <div class="black-accuracy-section">
+                <img
+                  src="./src/assets/avatars/placeholder-avatar-black.svg"
+                  alt="black-avatar"
+                  class="player-avatar black-avatar"
+                />
+                <div class="player-accuracy black-accuracy">N/A</div>
               </div>
             </div>
             <!-- JS: add ONE of  is-brilliant is-great is-book is-best is-excellent
@@ -229,7 +249,7 @@
           </section>
           <section class="section-graph-or-engine-line">
             <!-- JS: add is-loading while the engine is thinking -->
-            <section class="engine-line-section">
+            <section class="engine-line-section is-hidden">
               <div class="engine-depth">
                 Depth: <span class="engine-depth-value">16</span>
               </div>
@@ -354,24 +374,24 @@
                 </span>
               </div>
             </section>
-            <section class="eval-graph-section is-hidden">
+            <section class="eval-graph-section">
               <div id="eval-graph"></div>
             </section>
           </section>
 
           <section class="section-move-classification-or-move-list">
             <section class="move-classification-section is-hidden">
-              <section class="player-1-move-classification">
-                <div class="player-username player-1-username">Player 1</div>
-                <div class="for-player-1 num-moves num-move-brilliant">0</div>
-                <div class="for-player-1 num-moves num-move-great">0</div>
-                <div class="for-player-1 num-moves num-move-book">0</div>
-                <div class="for-player-1 num-moves num-move-best">0</div>
-                <div class="for-player-1 num-moves num-move-excellent">0</div>
-                <div class="for-player-1 num-moves num-move-good">0</div>
-                <div class="for-player-1 num-moves num-move-inaccuracy">0</div>
-                <div class="for-player-1 num-moves num-move-mistake">0</div>
-                <div class="for-player-1 num-moves num-move-blunder">0</div>
+              <section class="white-move-classification">
+                <div class="player-username white-username">Player 1</div>
+                <div class="for-white num-moves num-move-brilliant">0</div>
+                <div class="for-white num-moves num-move-great">0</div>
+                <div class="for-white num-moves num-move-book">0</div>
+                <div class="for-white num-moves num-move-best">0</div>
+                <div class="for-white num-moves num-move-excellent">0</div>
+                <div class="for-white num-moves num-move-good">0</div>
+                <div class="for-white num-moves num-move-inaccuracy">0</div>
+                <div class="for-white num-moves num-move-mistake">0</div>
+                <div class="for-white num-moves num-move-blunder">0</div>
               </section>
               <section class="move-classifications">
                 <div class="move-type">
@@ -538,17 +558,17 @@
                   ><span class="move-name">Blunder</span>
                 </div>
               </section>
-              <section class="player-2-move-classification">
-                <div class="player-username player-2-username">Player 2</div>
-                <div class="for-player-2 num-moves num-move-brilliant">0</div>
-                <div class="for-player-2 num-moves num-move-great">0</div>
-                <div class="for-player-2 num-moves num-move-book">0</div>
-                <div class="for-player-2 num-moves num-move-best">0</div>
-                <div class="for-player-2 num-moves num-move-excellent">0</div>
-                <div class="for-player-2 num-moves num-move-good">0</div>
-                <div class="for-player-2 num-moves num-move-inaccuracy">0</div>
-                <div class="for-player-2 num-moves num-move-mistake">0</div>
-                <div class="for-player-2 num-moves num-move-blunder">0</div>
+              <section class="black-move-classification">
+                <div class="player-username black-username">Player 2</div>
+                <div class="for-black num-moves num-move-brilliant">0</div>
+                <div class="for-black num-moves num-move-great">0</div>
+                <div class="for-black num-moves num-move-book">0</div>
+                <div class="for-black num-moves num-move-best">0</div>
+                <div class="for-black num-moves num-move-excellent">0</div>
+                <div class="for-black num-moves num-move-good">0</div>
+                <div class="for-black num-moves num-move-inaccuracy">0</div>
+                <div class="for-black num-moves num-move-mistake">0</div>
+                <div class="for-black num-moves num-move-blunder">0</div>
               </section>
             </section>
             <section class="move-list-section">
