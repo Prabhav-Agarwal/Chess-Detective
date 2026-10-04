@@ -7,12 +7,12 @@ class playerDescrip {
     this.#updateDescrip("black", black);
   }
 
-  #updateDescrip(color, { avatar, username, rating }) {
-    const avatarEle = document.querySelector(`.${color}-avatar`);
+  #updateDescrip(color, { username, rating }) {
+    // const avatarEle = document.querySelector(`.${color}-avatar`);
     const usernameEle = document.querySelector(`.${color}-username`);
     const ratingEle = document.querySelector(`.${color}-rating`);
 
-    avatarEle.setAttribute("src", avatar);
+    // avatarEle.setAttribute("src", avatar);
     usernameEle.textContent = username;
     ratingEle.textContent = `(${rating})`;
   }
@@ -28,3 +28,5 @@ class playerDescrip {
     }
   }
 }
+
+export default new playerDescrip();

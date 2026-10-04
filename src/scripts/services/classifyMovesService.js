@@ -166,4 +166,5 @@ export const classifyMoves = function () {
     if (isMoveBrilliant(options)) move.classification = "brilliant";
     else if (isMoveGreat(options)) move.classification = "great";
   });
+  console.log(gameModel.game);
 };

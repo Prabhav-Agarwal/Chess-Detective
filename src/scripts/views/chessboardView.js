@@ -7,6 +7,7 @@ class Chessboard {
   #chessboard = document.querySelector("#chess-board");
   #styles = document.querySelector(".styles");
   #iconOverlay = document.querySelector(".square-icons-overlay");
+  currMoveInfo;
   constructor() {
     this.setBoardPosition();
     this.#chessboard.showNotation = false;
@@ -19,6 +20,10 @@ class Chessboard {
   //function for setting board orientation ||argument is 'white' / 'black'
   setBoardOrientation(color) {
     this.#chessboard.orientation = color;
+    this.#removeMoveClassificationIcon();
+    const square = this.currMoveInfo.to;
+    const classification = this.currMoveInfo.classification;
+    this.#addMoveClassificationIcon(square, classification);
   }
 
   //function for chnagin color of a square || argument1 : targetColor , argument2 : square (eg: 'e4')

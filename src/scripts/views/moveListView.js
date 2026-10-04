@@ -3,7 +3,6 @@ import View from "./View";
 class MoveListSection extends View {
   #parentElement = document.querySelector(".move-list-section");
   #moveList = document.querySelector(".move-list");
-  #selectedPly;
 
   constructor() {
     super();
@@ -17,14 +16,14 @@ class MoveListSection extends View {
     return `
         <li class="move-row">
             <div class="move-num">${moveNum}</div>
-            <div class="ply white-ply" data-ply-num="${moveNum * 2 - 1}">${whitePly || ""}</div>
-            <div class="ply black-ply" data-ply-num="${moveNum * 2}">${blackPly || ""}</div>
+            <div class="ply white-ply" data-ply-num="${moveNum * 2 - 2}">${whitePly || ""}</div>
+            <div class="ply black-ply" data-ply-num="${moveNum * 2 - 1}">${blackPly || ""}</div>
         </li>
     `;
   }
 
   generateMoveList(moveList) {
-    const htmlStr = this.#moveList
+    const htmlStr = moveList
       .map((move) => this.#generateHtmlStr(move))
       .join("");
     this.updateHtml(this.#moveList, htmlStr);
@@ -42,23 +41,20 @@ class MoveListSection extends View {
       //guard clause
       if (!target) return;
 
-      this.removeCurrPlyHighlight();
-
-      this.#highlightCurrPly(target);
-
       const plyNum = target.dataset.plyNum;
       handler(plyNum);
+      this.removeCurrPlyHighlight();
+      this.#highlightCurrPly(target);
     });
   }
 
   #highlightCurrPly(targetPly) {
-    this.#selectedPly = targetPly;
-    this.#selectedPly.classList.add("is-current-ply");
+    targetPly.classList.add("is-current-ply");
   }
   removeCurrPlyHighlight() {
-    if (!this.#selectedPly) return;
-    this.#selectedPly = null;
-    this.#selectedPly.classList.remove("is-current-ply");
+    const currPly = document.querySelector(".ply.is-current-ply");
+    console.log(currPly);
+    currPly?.classList?.remove("is-current-ply");
   }
 }
 

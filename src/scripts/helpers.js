@@ -105,7 +105,9 @@ export const extractChesscomApiData = function (gameObject, playerUsername) {
   const extractedGameObj = {};
   const date = new Date(gameObject.end_time * 1000);
   const whiteUsername = gameObject.white.username;
+  const whiteRating = gameObject.white.rating;
   const blackUsername = gameObject.black.username;
+  const blackRating = gameObject.black.rating;
 
   const opponent =
     whiteUsername === playerUsername ? gameObject.black : gameObject.white;
@@ -122,6 +124,17 @@ export const extractChesscomApiData = function (gameObject, playerUsername) {
       .at(-1)
       .slice(0, index);
   }
+
+  extractedGameObj.players = {
+    white: {
+      username: whiteUsername,
+      rating: whiteRating,
+    },
+    black: {
+      username: blackUsername,
+      rating: blackRating,
+    },
+  };
 
   extractedGameObj.date = `${date.getDate()} ${date.toLocaleString("en-US", { month: "short" })}, ${date.getFullYear()}`;
   extractedGameObj.opponent = opponent.username;
@@ -163,12 +176,25 @@ export const extractLichessApiData = function (gameObject, playerUsername) {
   const extractedGameObj = {};
   const date = new Date(gameObject.lastMoveAt);
   const whiteUsername = gameObject.players.white.user.name;
+  const whiteRating = gameObject.players.white.rating;
+  const blackRating = gameObject.players.black.rating;
   const blackUsername = gameObject.players.black.user.name;
   const opponent =
     whiteUsername === playerUsername
       ? gameObject.players.black.user
       : gameObject.players.white.user;
   const timeControl = gameObject.speed;
+
+  extractedGameObj.players = {
+    white: {
+      username: whiteUsername,
+      rating: whiteRating,
+    },
+    black: {
+      username: blackUsername,
+      rating: blackRating,
+    },
+  };
 
   extractedGameObj.date = `${date.getDate()} ${date.toLocaleString("en-US", { month: "short" })}, ${date.getFullYear()}`;
   extractedGameObj.opponent = opponent.name;
@@ -197,5 +223,13 @@ export const extractLichessApiData = function (gameObject, playerUsername) {
 
 ///saving data to session storage
 export const saveToSessionStorage = function (key, value) {
-  sessionStorage.setItem(key, value);
+  sessionStorage.setItem(key, JSON.stringify(value));
 };
+
+///extracting data from session storage
+
+export const fetchFromSessionStorage = function (key, value) {
+  return JSON.parse(sessionStorage.getItem(key));
+};
+
+

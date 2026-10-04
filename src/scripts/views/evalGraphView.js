@@ -1,8 +1,10 @@
 import ApexCharts from "apexcharts";
 import View from "./View";
 
-class EvalGraph {
+class EvalGraph extends View {
+  #parentElement = document.querySelector(".eval-graph-section");
   #evalGraph = document.querySelector("#eval-graph");
+  #ready;
   #options = {
     series: [{ name: "Evaluation", data: [] }],
 
@@ -53,7 +55,6 @@ class EvalGraph {
       tooltip: { enabled: false },
       crosshairs: { show: true },
       min: 0,
-      max: 36,
     },
 
     yaxis: { show: false, min: -5, max: 5 },
@@ -83,20 +84,28 @@ class EvalGraph {
   };
   #chart;
   constructor() {
+    super();
     this.#chart = new ApexCharts(this.#evalGraph, this.#options);
-    this.#chart.render();
+    this.#ready = this.#chart.render();
   }
 
-  updateOptions(sample) {
+  get parentElement() {
+    return this.#parentElement;
+  }
+
+  updateChartOptions(sample /* arrayForDiscreteMarkers */) {
     const data = sample.map((v, i) => [i, v]);
 
     const top = Math.max(...sample, 0);
     const bottom = Math.min(...sample, 0);
-    const p = (top / (top - bottom)) * 100;
 
-    chart.render().then(() =>
-      chart.updateOptions({
+    const p = top - bottom === 0 ? 50 : (top / (top - bottom)) * 100;
+
+    this.#ready.then(() =>
+      this.#chart.updateOptions({
         series: [{ data }],
+        xaxis: { max: sample.length - 1 },
+        // markers: { discrete: arrayForDiscreteMarkers },
         fill: {
           gradient: {
             colorStops: [

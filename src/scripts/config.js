@@ -1,10 +1,10 @@
-export const SEARCH_DEPTH = 12;
+export const SEARCH_DEPTH = 4;
 export const INIT_CP = 0;
 export const MATE_CP = 1000;
 export const CP_CLAMP = 1000; // Lichess clamps cp to ±1000 before converting to win%
 export const SACRIFICE_PV_MAX_PLIES = 6;
 export const MIN_SACRIFICIAL_MATERIAL_LOSS = 2;
-export const ONLY_MOVE_THRESHOLD_PCTG = 4;
+export const ONLY_MOVE_THRESHOLD_PCTG = 10;
 export const LOSING_MAX_PCTG = 35;
 export const EQUAL_MIN_PCTG = 45;
 export const EQUAL_MAX_PCTG = 55;

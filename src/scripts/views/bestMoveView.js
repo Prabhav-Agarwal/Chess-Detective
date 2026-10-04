@@ -12,18 +12,19 @@ class BestMoveSection extends View {
   }
 
   #generateHtmlStr({ currPly, plyNum, classification, bestMove }) {
+    console.log(currPly, bestMove);
     return `
         <div class="curr-move-descrip ${`is-${classification}` || ""}">
             <span class="curr-move-icon"></span>
             <span class="curr-move-text">${currPly} is ${classification}</span>
         </div>
-        <div class="best-move ${currPly === bestMove ? "is-hidden" : ""}">
+        <div class="best-move ${!bestMove || currPly === bestMove ? "is-hidden" : ""}">
             The best move was <span class="best-move-btn" data-ply-num="${plyNum}">${bestMove}</span>
         </div>
     `;
   }
 
-  updateCurrMoveDescrip(moveObj) {
+  updateBestMoveSection(moveObj) {
     const htmlStr = this.#generateHtmlStr(moveObj);
     this.updateHtml(this.#parentElement, htmlStr);
     const svgBox = document.querySelector(".curr-move-icon");
@@ -31,12 +32,12 @@ class BestMoveSection extends View {
   }
 
   #addClassificationSvg(container, classification) {
-    const svg = document.querySelector(`.${classification}`).cloneNode(true);
-    if (!svg) return;
-    container.append(svg);
+    const htmlStr = `<img src="./src/assets/svg/classification/${classification}.svg" alt="${classification}">`;
+
+    container.innerHTML = htmlStr;
   }
 
-  addHandlerRenderPosition(handler) {
+  addHandlerBestMoveBtn(handler) {
     this.#parentElement.addEventListener("click", (event) => {
       const target = event.target.closest(".best-move-btn");
       //guard clause

@@ -119,7 +119,7 @@ class Slider {
         const target = event.target;
         const id = target.dataset.id;
         const game = gamesArray.find((game) => game.id === id);
-        saveToSessionStorage("pgn", game.pgn);
+        saveToSessionStorage("gameInfo", game);
       }),
     );
   }

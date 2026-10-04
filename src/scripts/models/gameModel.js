@@ -1,4 +1,5 @@
 import { Chess } from "chess.js";
+import { fetchFromSessionStorage } from "../helpers";
 
 //object for maintaining state of game
 export const game = {
@@ -9,8 +10,8 @@ export const game = {
 
 //function for starting a new chess game
 export const startGame = function () {
-  game.gamePgn = sessionStorage.getItem("pgn");
+  game.gameInfo = fetchFromSessionStorage("gameInfo");
   game.chessGame = new Chess();
-  game.chessGame.loadPgn(game.gamePgn);
+  game.chessGame.loadPgn(game.gameInfo.pgn);
   game.gameMoves = game.chessGame.history({ verbose: true });
 };
