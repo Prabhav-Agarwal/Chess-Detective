@@ -32,38 +32,33 @@ class EngineLinesSection extends View {
 
   updateEngineLineSection({ line1, line2 }) {
     this.#removeAllPlies();
-    this.#updateEngineLine(1, line1);
-    this.#updateEngineLine(2, line2);
+
     const evalLine1 = document.querySelector(".engine-eval-line-1");
     const evalLine2 = document.querySelector(".engine-eval-line-2");
 
-    const EvalLine1 = line1[0].currMoveCp / 100;
-    const EvalLine2 = line2[0].currMoveCp / 100;
-    evalLine1.textContent = EvalLine1;
-    evalLine2.textContent = EvalLine2;
+    const engineLine2 = document.querySelector(".engine-line-2");
 
-    if (EvalLine1 < 0) {
-      evalLine1.classList.add("is-negative");
-    } else evalLine1.classList.remove("is-negative");
-    if (EvalLine2 < 0) {
-      evalLine2.classList.add("is-negative");
-    } else evalLine2.classList.remove("is-negative");
+    if (line1?.length) {
+      this.#updateEngineLine(1, line1);
+      const EvalLine1 = line1[0].currMoveCp / 100;
+      evalLine1.textContent = EvalLine1;
+      if (EvalLine1 < 0) {
+        evalLine1.classList.add("is-negative");
+      } else evalLine1.classList.remove("is-negative");
+    }
+
+    if (line2?.length) {
+      engineLine2.classList.remove("is-hidden");
+      this.#updateEngineLine(2, line2);
+      const EvalLine2 = line2[0].currMoveCp / 100;
+      evalLine2.textContent = EvalLine2;
+      if (EvalLine2 < 0) {
+        evalLine2.classList.add("is-negative");
+      } else evalLine2.classList.remove("is-negative");
+    } else {
+      engineLine2.classList.add("is-hidden");
+    }
   }
-
-  // addHandlerRenderPosition(handler) {
-  //   this.#parentElement.addEventListener("click", (event) => {
-  //     const target = event.target.closest(".move-ply");
-  //     //guard clause
-  //     if (!target) return;
-
-  //     this.removeCurrPlyHighlight();
-  //     this.#highlightCurrPly(target);
-
-  //     const plyNum = target.dataset.plyNum;
-  //     const lineNum = target.dataset.lineNum;
-  //     handler(plyNum, lineNum);
-  //   });
-  // }
 
   addHandlerExpandEngineLineBtn() {
     this.#parentElement.addEventListener("click", (event) => {
@@ -92,8 +87,9 @@ class EngineLinesSection extends View {
   }
   removeCurrPlyHighlight() {
     if (!this.#selectedPly) return;
-    this.#selectedPly = null;
+
     this.#selectedPly.classList.remove("is-current-ply");
+    this.#selectedPly = null;
   }
 }
 

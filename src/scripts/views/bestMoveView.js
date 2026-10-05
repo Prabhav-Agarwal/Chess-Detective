@@ -12,7 +12,15 @@ class BestMoveSection extends View {
   }
 
   #generateHtmlStr({ currPly, plyNum, classification, bestMove }) {
-    console.log(currPly, bestMove);
+    if (!classification) {
+      return `<div class="curr-move-descrip">
+            <span class="curr-move-icon"></span>
+            <span class="curr-move-text">${currPly} is last move</span>
+        </div>
+        <div class="best-move ${!bestMove || currPly === bestMove ? "is-hidden" : ""}">
+            The best move was <span class="best-move-btn" data-ply-num="${plyNum}">${bestMove}</span>
+        </div>`;
+    }
     return `
         <div class="curr-move-descrip ${`is-${classification}` || ""}">
             <span class="curr-move-icon"></span>
@@ -32,8 +40,12 @@ class BestMoveSection extends View {
   }
 
   #addClassificationSvg(container, classification) {
-    const htmlStr = `<img src="./src/assets/svg/classification/${classification}.svg" alt="${classification}">`;
-
+    const htmlStr = `
+  <img
+    src="${import.meta.env.BASE_URL}svg/classification/${classification}.svg"
+    alt="${classification}"
+  >
+`;
     container.innerHTML = htmlStr;
   }
 

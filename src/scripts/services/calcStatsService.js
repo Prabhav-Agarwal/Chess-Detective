@@ -164,6 +164,4 @@ export const calculateStats = function () {
     game.centiPawnsArr["line1"],
     game.gameMoves[0]?.color === "b" ? "black" : "white",
   );
-
-  console.log(gameModel.game);
 };

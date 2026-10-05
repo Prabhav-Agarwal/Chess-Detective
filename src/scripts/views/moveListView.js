@@ -3,6 +3,7 @@ import View from "./View";
 class MoveListSection extends View {
   #parentElement = document.querySelector(".move-list-section");
   #moveList = document.querySelector(".move-list");
+  allPlies;
 
   constructor() {
     super();
@@ -27,6 +28,8 @@ class MoveListSection extends View {
       .map((move) => this.#generateHtmlStr(move))
       .join("");
     this.updateHtml(this.#moveList, htmlStr);
+
+    this.allPlies = document.querySelectorAll(".ply");
   }
 
   //after move is clicked :
@@ -44,16 +47,15 @@ class MoveListSection extends View {
       const plyNum = target.dataset.plyNum;
       handler(plyNum);
       this.removeCurrPlyHighlight();
-      this.#highlightCurrPly(target);
+      this.highlightCurrPly(target);
     });
   }
 
-  #highlightCurrPly(targetPly) {
+  highlightCurrPly(targetPly) {
     targetPly.classList.add("is-current-ply");
   }
   removeCurrPlyHighlight() {
     const currPly = document.querySelector(".ply.is-current-ply");
-    console.log(currPly);
     currPly?.classList?.remove("is-current-ply");
   }
 }

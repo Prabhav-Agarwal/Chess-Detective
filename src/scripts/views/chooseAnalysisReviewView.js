@@ -4,7 +4,6 @@ class chooseAnalysisReview {
 
   addHandlerChooseAnalysisReview(handlerRenderAnalysis, handlerRenderReview) {
     this.#parentElement.addEventListener("click", (event) => {
-      console.log("clicked");
       const target = event.target.closest(".choose-btn");
       if (!target) return;
       this.#unselectAllBtns();

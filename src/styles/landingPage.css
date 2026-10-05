@@ -2,18 +2,21 @@
    CHESS DETECTIVE - DESIGN TOKENS & VARIABLES
    ========================================================================== */
 :root {
-  --bg: #0a0f0c;
-  --bg-soft: #10160f;
-  --surface: #141b18;
-  --surface-2: #1b231f;
-  --circle-glow: #24352a;
-  --accent: #8fe3a6;
-  --accent-hover: #a2ebb7;
-  --accent-dim: #4e7d5e;
-  --text-primary: #f5f7f4;
-  --text-secondary: #9aa79e;
-  --text-tertiary: #6e7a72;
-  --hairline: #232a26;
+  color-scheme: dark;
+
+  /* Black & white theme: same palette as gameReview.css (--cd-* tokens) */
+  --bg: #0a0a0a;
+  --bg-soft: #0f0f0f;
+  --surface: #141414;
+  --surface-2: #1b1b1b;
+  --circle-glow: #242424;
+  --accent: #ffffff;
+  --accent-hover: #d9d9d9;
+  --accent-dim: #8a8a8a;
+  --text-primary: #f5f5f5;
+  --text-secondary: #c4c4c4;
+  --text-tertiary: #8a8a8a;
+  --hairline: #2c2c2c;
   --font-main:
     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -61,7 +64,7 @@ body {
 
   background: radial-gradient(
     circle at 80% 30%,
-    rgba(36, 53, 42, 0.28) 0%,
+    rgba(255, 255, 255, 0.05) 0%,
     transparent 60%
   );
 }
@@ -79,7 +82,7 @@ body {
   padding: 22px 64px;
 
   border-bottom: 1px solid var(--hairline);
-  background-color: rgba(10, 15, 12, 0.85);
+  background-color: rgba(15, 15, 15, 0.85);
   backdrop-filter: blur(12px);
 
   position: relative;
@@ -106,7 +109,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  box-shadow: 0 2px 10px rgba(143, 227, 166, 0.25);
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.15);
   transition: transform var(--transition-fast);
 }
 
@@ -190,14 +193,14 @@ body {
 
   cursor: pointer;
 
-  box-shadow: 0 2px 12px rgba(143, 227, 166, 0.18);
+  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.11);
   transition: all var(--transition-fast);
 }
 
 .get-started-btn:hover {
   background-color: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(143, 227, 166, 0.32);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.19);
 }
 
 .get-started-btn:active {
@@ -289,7 +292,7 @@ body {
 }
 
 .tagline-row:nth-child(2) {
-  color: var(--accent);
+  color: var(--text-tertiary);
 }
 
 .app-description {
@@ -324,14 +327,14 @@ body {
   border-radius: 12px;
   cursor: pointer;
 
-  box-shadow: 0 4px 16px rgba(143, 227, 166, 0.18);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.11);
   transition: all var(--transition-fast);
 }
 
 .main-get-started-btn:hover {
   background-color: var(--accent-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(143, 227, 166, 0.35);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.21);
 }
 
 .main-get-started-btn:active {
@@ -423,7 +426,7 @@ body {
 
   background-color: var(--surface);
   border: 1px solid var(--hairline);
-  border-radius: 22px;
+  border-radius: 14px;
 
   padding: 34px 30px;
 
@@ -442,10 +445,10 @@ body {
 
 .features-ele:hover {
   transform: translateY(-6px);
-  border-color: rgba(143, 227, 166, 0.45);
+  border-color: rgba(255, 255, 255, 0.4);
   box-shadow:
     0 16px 36px rgba(0, 0, 0, 0.4),
-    0 0 24px rgba(143, 227, 166, 0.08);
+    0 0 24px rgba(255, 255, 255, 0.05);
 }
 
 .feature-svg {
@@ -506,7 +509,7 @@ body {
   padding: 20px 64px;
 
   border-top: 1px solid var(--hairline);
-  background-color: rgba(10, 15, 12, 0.7);
+  background-color: rgba(10, 10, 10, 0.7);
 }
 
 .footer-stat {
@@ -521,7 +524,7 @@ body {
 }
 
 .footer-stat:hover {
-  background-color: rgba(27, 35, 31, 0.5);
+  background-color: rgba(27, 27, 27, 0.5);
 }
 
 .stat-svg {
@@ -772,4 +775,14 @@ body {
     min-height: 220px;
     padding: 28px 24px;
   }
+}
+
+/* ==========================================================================
+   KEYBOARD FOCUS (white ring, same as the review page)
+   ========================================================================== */
+.nav-element:focus-visible,
+.get-started-btn:focus-visible,
+.main-get-started-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }

@@ -1,6 +1,7 @@
 import { CHESSCOM_LOGO_SRC } from "../config";
 import { LICHESS_LOGO_SRC } from "../config";
 import { saveToSessionStorage } from "../helpers";
+import { escapeHtml } from "../helpers";
 
 class Slider {
   #parentElement = document.querySelector(".body-slider");
@@ -10,9 +11,7 @@ class Slider {
 
   //functions for adding handlers for events of slide 1
   addHandlerSelectPlatform() {
-    console.log("Hnadler attached");
     this.#parentElement.addEventListener("click", (event) => {
-      console.log("event triggered");
       const target = event.target.closest(".choose-platform-btn");
       if (!target) return;
       this.#allChoosePlatformBtns.forEach((btn) =>
@@ -79,30 +78,31 @@ class Slider {
   }
   #getGameRowHTML(options) {
     return `<li class="game-row">
-                    <div class="cell date-cell">${options.date}</div>
-                    <div class="cell opponent-cell">${options.opponent}</div>
-                    <div class="cell time-control-cell">${options.timeControl}</div>
+                    <div class="cell date-cell">${escapeHtml(options.date)}</div>
+                    <div class="cell opponent-cell">${escapeHtml(options.opponent)}</div>
+                    <div class="cell time-control-cell">${escapeHtml(options.timeControl)}</div>
                     <div class="cell result-cell">
-                      <div class="result ${options.result.toLowerCase()}">${options.result}</div>
+                      <div class="result ${escapeHtml(options.result.toLowerCase())}">${escapeHtml(options.result)}</div>
                     </div>
-                    <div class="cell opening-cell">${options.opening}</div>
+                    <div class="cell opening-cell">${escapeHtml(options.opening)}</div>
                     <div class="cell action-cell" >
-                      <a href="gameReview.html" class="review-btn" data-id="${options.id}">Review</a>
+                      <a href="gameReview.html" class="review-btn" data-id="${escapeHtml(options.id)}">Review</a>
                     </div>
                   </li>`;
   }
 
-  addHandlerChangePlatform() {
+  addHandlerChangePlatform(handler) {
     this.#parentElement.addEventListener("click", (event) => {
       const target = event.target.closest(".change-platform-btn");
       if (!target) return;
+      handler();
       const changeToSlide = document.querySelector(".slider-platform");
       const numSlide = 1;
       this.#changeSlide(changeToSlide, numSlide);
     });
   }
 
-  addHandlerChangeUsername() {
+  addHandlerChangeUsername(handler) {
     this.#parentElement.addEventListener("click", (event) => {
       const target = event.target.closest(".change-username-btn");
       if (!target) return;
@@ -132,6 +132,18 @@ class Slider {
   removeLoadingBar() {
     const loadingBar = document.querySelector(".games-loading");
     loadingBar.classList.add("hidden");
+  }
+
+  renderGamesError() {
+    const errorElement = document.querySelector(".games-error");
+
+    errorElement.classList.remove("hidden");
+  }
+
+  removeGamesError() {
+    const errorElement = document.querySelector(".games-error");
+
+    errorElement.classList.add("hidden");
   }
   #changeSlide(toDisplaySlide, numSlide) {
     //updating slide

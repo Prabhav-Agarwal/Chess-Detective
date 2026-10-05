@@ -16,10 +16,10 @@ export const getGamesLichess = async function (username) {
     };
 
     const data = await getJsonLichess(url, options);
-    console.log(data);
+
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };
 
@@ -29,9 +29,8 @@ export const getGamesChesscom = async function (username, year, month) {
     const url = `${CHESSCOM_GAMES_REQUEST_URL}${username}/games/${year}/${month.toString(10).length === 2 ? month : `0${month}`}`;
 
     const data = await getJsonChesscom(url);
-    console.log(data);
     return data;
   } catch (error) {
-    throw new Error(error.message);
+    throw error;
   }
 };

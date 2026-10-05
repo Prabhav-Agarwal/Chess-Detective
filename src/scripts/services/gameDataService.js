@@ -47,6 +47,7 @@ const getNumMoves = function (color) {
     good: 0,
     inaccuracy: 0,
     mistake: 0,
+    miss: 0,
     blunder: 0,
   };
 
@@ -83,7 +84,7 @@ export const extractMoveInfo = function (index) {
   const moveObj = {};
   const game = gameModel.game;
   const move = game.gameMoves[index];
-  console.log(index, move, game.gameMoves[index - 1]);
+
   moveObj.plyNum = index;
   moveObj.fenAfter = move.after;
   moveObj.classification = move.classification;
@@ -94,7 +95,6 @@ export const extractMoveInfo = function (index) {
   moveObj.currMoveCp = game.centiPawnsArr.line1[index];
   moveObj.bestMove = game.gameMoves?.[index - 1]?.posAnalysis?.bestMove;
   moveObj.lines = move.posAnalysis.engineLines;
-  console.log(moveObj.lines);
 
   return moveObj;
 };

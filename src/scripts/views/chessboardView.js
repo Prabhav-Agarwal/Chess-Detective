@@ -41,7 +41,8 @@ class Chessboard {
 
   //function for adding move classification icon || argument1 : square(eg: 'e4')  , arg2 : svgSelector
   #addMoveClassificationIcon(square, moveSvgType) {
-    if (!/^[a-h][1-8]$/.test(square)) return;
+    if (!/^[a-h][1-8]$/.test(square) || !moveSvgType) return;
+
     const svgSelector = `.${moveSvgType}`;
     const svg = document.querySelector(svgSelector);
     if (!svg) return;

@@ -8,7 +8,6 @@ class evalBar {
   updateEvalBar({ currMoveCp, currMoveWinPctg }) {
     this.#whiteEval.style.height = `${currMoveWinPctg}%`;
     this.#setCurrEvalPos(currMoveWinPctg);
-    console.log(currMoveCp);
     this.#currEvalValue.textContent = `${currMoveCp / 100}`;
   }
 

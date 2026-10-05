@@ -13,6 +13,14 @@ import { PEICE_VALUES } from "../config.js";
 import { SACRIFICE_PV_MAX_PLIES } from "../config.js";
 import { MIN_SACRIFICIAL_MATERIAL_LOSS } from "../config.js";
 
+import { openings } from "../../assets/openings/openings_computed.js";
+
+const isBookMove = function (fen) {
+  const opening = openings.find((openingObj) => fen === openingObj.fen);
+  if (opening) return true;
+  else return false;
+};
+
 const classifyMovesStandard = function (expectedScore) {
   if (!Number.isFinite(expectedScore)) return null; // unknown, not "best" or "blunder"
   if (expectedScore < 0) return "best";
@@ -27,6 +35,21 @@ const classifyMovesStandard = function (expectedScore) {
   return "blunder";
 };
 
+//miss test
+const isMoveMiss = function (expectedScore, winPctgBefore, winPctgAfter) {
+  const { lowerLim, upperLim } = EXPECTED_SCORE_TABLE["blunder"];
+  if (
+    expectedScore >= lowerLim &&
+    expectedScore <= upperLim &&
+    winPctgBefore >= WINNING_MIN_PCTG &&
+    winPctgAfter >= EQUAL_MIN_PCTG &&
+    winPctgAfter < EQUAL_MAX_PCTG
+  ) {
+    return true;
+  } else return false;
+};
+
+//greta move test
 const isMoveGreat = function ({
   playedMove,
   bestMove,
@@ -141,9 +164,6 @@ export const classifyMoves = function () {
   const { expectedScoresArr, gameMoves, winPercentagesArr } = gameModel.game;
 
   gameMoves.forEach((move, i) => {
-    move.classification = classifyMovesStandard(expectedScoresArr.line1[i]);
-    if (i < 8) return;
-
     // winPercentagesArr is White's perspective -> convert to the mover's
     const toMoverPov = (winPct) =>
       Number.isFinite(winPct)
@@ -151,6 +171,30 @@ export const classifyMoves = function () {
           ? winPct
           : 100 - winPct
         : null;
+
+    //book move test
+    if (isBookMove(move.after)) {
+      move.classification = "book";
+      return;
+    }
+    const beforeWinPercentage = toMoverPov(winPercentagesArr?.line1[i - 1]);
+    const afterWinPercentage = toMoverPov(winPercentagesArr?.line1[i]);
+
+    //miss move test
+    if (
+      isMoveMiss(
+        expectedScoresArr.line1[i],
+        beforeWinPercentage,
+        afterWinPercentage,
+      )
+    ) {
+      move.classification = "miss";
+      return;
+    }
+
+    //standard move classification test
+    move.classification = classifyMovesStandard(expectedScoresArr.line1[i]);
+    if (i < 8) return;
 
     const options = {
       playedMove: move.lan,
@@ -166,5 +210,4 @@ export const classifyMoves = function () {
     if (isMoveBrilliant(options)) move.classification = "brilliant";
     else if (isMoveGreat(options)) move.classification = "great";
   });
-  console.log(gameModel.game);
 };

@@ -177,7 +177,7 @@ button {
   align-items: center;
 }
 
-.landing-page-link {
+.page-link {
   padding: 8px 15px;
   color: var(--cd-text-secondary);
   text-decoration: none;
@@ -187,7 +187,7 @@ button {
     background-color 150ms ease;
 }
 
-.landing-page-link:hover {
+.page-link:hover {
   color: var(--cd-accent);
   background: var(--cd-accent-soft);
 }
@@ -939,6 +939,9 @@ button {
 .curr-move-descrip.is-mistake {
   --move-color: #ef862d;
 }
+.curr-move-descrip.is-miss {
+  --move-color: #ff7769;
+}
 .curr-move-descrip.is-blunder {
   --move-color: #e34b4b;
 }
@@ -1035,6 +1038,9 @@ body.strict-mono .best-move-section {
 
 .num-move-mistake {
   color: #ef862d;
+}
+.num-move-miss {
+  color: #ff7769;
 }
 
 .num-move-blunder {
@@ -1427,7 +1433,7 @@ chess-board .sq.d.hl {
 
 /* ---------- Keyboard focus (white ring on black) ---------- */
 
-.landing-page-link:focus-visible,
+.page-link:focus-visible,
 .white-ply:focus-visible,
 .black-ply:focus-visible {
   outline: 2px solid var(--cd-accent);
@@ -1503,7 +1509,8 @@ body.strict-mono .num-moves {
    Hide it with the existing .is-hidden class when the review is ready.
    ========================================================= */
 
-.review-overlay {
+.review-overlay,
+.review-error-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
@@ -1622,6 +1629,97 @@ body.strict-mono .num-moves {
   color: var(--cd-muted);
   font-size: 14px;
   line-height: 1.55;
+}
+
+.review-analysis-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+
+  color: var(--cd-muted);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.review-analysis-current,
+.review-analysis-total {
+  color: var(--cd-text);
+  font-weight: 600;
+}
+
+/* =========================================================
+   REVIEW ERROR OVERLAY
+   Matches the existing review loading overlay theme.
+   ========================================================= */
+
+.review-error-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: min(420px, 100%);
+  padding: 32px;
+
+  background: var(--cd-panel-raised);
+  border: 1px solid var(--cd-border);
+  border-radius: var(--cd-radius);
+  box-shadow: var(--cd-shadow);
+}
+
+/* ---------- Error icon ---------- */
+
+.review-error-icon {
+  width: 64px;
+  height: 64px;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid var(--cd-red);
+  border-radius: 50%;
+
+  color: var(--cd-red);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* ---------- Button ---------- */
+
+.review-error-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 120px;
+  padding: 10px 18px;
+  margin-top: 24px;
+
+  border: 1px solid var(--cd-border);
+  border-radius: 8px;
+
+  background: var(--cd-accent);
+  color: var(--cd-bg);
+
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.review-error-btn:hover {
+  background: var(--cd-accent-hover);
+}
+
+.review-error-btn:focus-visible {
+  outline: 2px solid var(--cd-accent);
+  outline-offset: 3px;
 }
 
 /* ---------- Reduced motion ----------

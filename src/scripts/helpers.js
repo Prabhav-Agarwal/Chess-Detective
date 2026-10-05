@@ -115,11 +115,13 @@ export const extractChesscomApiData = function (gameObject, playerUsername) {
   const openingNameWordsArr = gameObject.eco
     .match(/(?<=\/openings\/).*/)?.[0]
     .split("-");
-  if (typeof openingNameWordsArr.at(-1)[0] === "number") {
-    openingNameWordsArr.splice(-1);
+  const lastWord = openingNameWordsArr.at(-1);
+
+  if (/^\d/.test(lastWord)) {
+    openingNameWordsArr.pop();
   }
   const index = openingNameWordsArr.at(-1).indexOf("...");
-  if (index != undefined && index != null) {
+  if (index != -1) {
     openingNameWordsArr[openingNameWordsArr.length - 1] = openingNameWordsArr
       .at(-1)
       .slice(0, index);
@@ -226,10 +228,23 @@ export const saveToSessionStorage = function (key, value) {
   sessionStorage.setItem(key, JSON.stringify(value));
 };
 
+//html escaping helper
+export const escapeHtml = function (value) {
+  return String(value).replace(/[&<>"']/g, (char) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    };
+
+    return entities[char];
+  });
+};
+
 ///extracting data from session storage
 
 export const fetchFromSessionStorage = function (key, value) {
   return JSON.parse(sessionStorage.getItem(key));
 };
-
-

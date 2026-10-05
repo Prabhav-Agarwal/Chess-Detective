@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/src/styles/landingPage.css" />
     <script
       defer
-      src="src/scripts/controllers/userController.js"
+      src="src/scripts/controllers/landingController.js"
       type="module"
     ></script>
     <!-- <script
@@ -34,7 +34,7 @@
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill="#0A0F0C"
+                fill="#0A0A0A"
                 d="M191.981,186.136c2.459-26.64,5.491-124.514-73.554-181.851L112.52,0l-8.45,17.83L71.919,6.041l7.338,41.919
             c-14.624,9.853-35.107,25.227-45.82,40.37c-6.452,9.111-7.19,20.091-1.998,30.124c6.623,12.8,21.19,20.366,35.178,18.031
             c11.724-1.956,25.005-8.281,33.993-13.181C97.595,144.116,87.003,186,50.676,186v0.124H39.277v46.399h165.236v-46.399h-12.531
@@ -46,7 +46,7 @@
             c-0.178,5.426-0.526,9.835-0.834,12.933H84.249C105.675,167.83,113.194,133.358,113.882,112.257z M192.419,220.43H51.397v-22.188
             h141.022V220.43z"
               />
-              <circle fill="#0A0F0C" cx="99.041" cy="78.641" r="9.671" /></svg
+              <circle fill="#0A0A0A" cx="99.041" cy="78.641" r="9.671" /></svg
           ></span>
 
           <h1 class="app-title">Chess Detective</h1>
@@ -104,9 +104,9 @@
             >
               <defs>
                 <radialGradient id="heroGlow" cx="45%" cy="34%" r="65%">
-                  <stop offset="0%" stop-color="#24352A" />
-                  <stop offset="58%" stop-color="#141B18" />
-                  <stop offset="100%" stop-color="#0A0F0C" />
+                  <stop offset="0%" style="stop-color: var(--circle-glow)" />
+                  <stop offset="58%" style="stop-color: var(--surface)" />
+                  <stop offset="100%" style="stop-color: var(--bg)" />
                 </radialGradient>
 
                 <clipPath id="cardClip">
@@ -139,29 +139,38 @@
                   width="300"
                   height="366"
                   rx="28"
-                  fill="#141B18"
+                  fill="var(--surface)"
                   filter="url(#cardShadow)"
                 />
 
                 <g clip-path="url(#cardClip)">
-                  <rect width="300" height="366" fill="#141B18" />
+                  <rect width="300" height="366" fill="var(--surface)" />
 
                   <!-- avatar blob -->
-                  <circle cx="150" cy="108" r="60" fill="#24352A" />
+                  <circle cx="150" cy="108" r="60" fill="var(--circle-glow)" />
 
                   <!-- footer bar -->
-                  <rect x="0" y="300" width="300" height="66" fill="#1B231F" />
+                  <rect
+                    x="0"
+                    y="300"
+                    width="300"
+                    height="66"
+                    fill="var(--surface-2)"
+                  />
                   <line
                     x1="0"
                     y1="300"
                     x2="300"
                     y2="300"
-                    stroke="#232A26"
+                    stroke="var(--hairline)"
                     stroke-width="2"
                   />
 
                   <!-- knight artwork, centered lower in the card -->
-                  <g transform="translate(75,150) scale(0.65)" fill="#F5F7F4">
+                  <g
+                    transform="translate(75,150) scale(0.65)"
+                    fill="var(--text-primary)"
+                  >
                     <path
                       d="M191.981,186.136c2.459-26.64,5.491-124.514-73.554-181.851L112.52,0l-8.45,17.83L71.919,6.041l7.338,41.919
                     c-14.624,9.853-35.107,25.227-45.82,40.37c-6.452,9.111-7.19,20.091-1.998,30.124c6.623,12.8,21.19,20.366,35.178,18.031

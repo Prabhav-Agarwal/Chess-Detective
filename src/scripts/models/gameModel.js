@@ -12,6 +12,10 @@ export const game = {
 export const startGame = function () {
   game.gameInfo = fetchFromSessionStorage("gameInfo");
   game.chessGame = new Chess();
+
+  if (!game.gameInfo?.pgn) {
+    throw new Error("Game data is missing or invalid.");
+  }
   game.chessGame.loadPgn(game.gameInfo.pgn);
   game.gameMoves = game.chessGame.history({ verbose: true });
 };

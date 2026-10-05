@@ -16,6 +16,7 @@ import evalBarView from "../views/evalBarView.js";
 import evalGraphView from "../views/evalGraphView.js";
 import gameAccuracyView from "../views/gameAccuracyView.js";
 import loadingOverlayView from "../views/loadingOverlayView.js";
+import errorOverlayView from "../views/errorOverlayView.js";
 import moveClassificationView from "../views/moveClassificationView.js";
 import moveListView from "../views/moveListView.js";
 import navBtnView from "../views/navBtnView.js";
@@ -54,7 +55,7 @@ const controlPositionRender = function ({
 
   evalBarView.updateEvalBar({ currMoveCp, currMoveWinPctg });
   bestMove = bestMove?.currPly;
-  console.log(currPly, bestMove);
+
   bestMoveView.updateBestMoveSection({
     currPly,
     plyNum,
@@ -62,7 +63,6 @@ const controlPositionRender = function ({
     bestMove,
   });
 
-  console.log(lines);
   if (lines) {
     engineLineView.updateEngineLineSection(lines);
   }
@@ -92,12 +92,16 @@ const controlUpdateGameStats = function () {
 
   // renderingPosition
   controlPositionRender(extractMoveInfo(0));
+
+  // adding highlight to first ply
+  const firstPly = moveListView.allPlies[0];
+  moveListView.highlightCurrPly(firstPly);
 };
 
 //handler for click on plies in engine line
 const handlerEngineLinePlies = function (lineNum, plyNum) {
   const movePlyNum = navBtnView.currentPlyNum;
-  console.log(movePlyNum, lineNum, plyNum);
+
   const engineLinePlyObj = gameDataService.getEngineLinePly(
     movePlyNum,
     lineNum,
@@ -150,56 +154,61 @@ const handlerBestMoveBtn = function (plyNum) {
 
 const controlGame = function () {
   gameModel.startGame();
-  console.log(gameModel.game);
 };
 
 const init = async function () {
-  //Page Loads Overlay is Rendered
-  loadingOverlayView.render();
+  try {
+    //Page Loads Overlay is Rendered
+    loadingOverlayView.render();
 
-  //Adding handler for switching b/w analysis and review
-  chooseAnalysisReviewView.addHandlerChooseAnalysisReview(
-    handlerRenderAnalysis,
-    handlerRenderReview,
-  );
+    //Adding handler for switching b/w analysis and review
+    chooseAnalysisReviewView.addHandlerChooseAnalysisReview(
+      handlerRenderAnalysis,
+      handlerRenderReview,
+    );
 
-  controlGame();
-  await Stockfish.getGameEngineAnalysis();
-  calculateStats();
-  classifyMoves();
-  restructureModel();
+    controlGame();
+    await Stockfish.getGameEngineAnalysis(
+      loadingOverlayView.updateNumMoveAnalysed,
+    );
+    calculateStats();
+    classifyMoves();
+    restructureModel();
 
-  navBtnView.lastPlyNum = getNumPlies();
-  //Updating Game Stats in view
-  controlUpdateGameStats();
+    navBtnView.lastPlyNum = getNumPlies();
+    //Updating Game Stats in view
+    controlUpdateGameStats();
 
-  //Page Loads Overlay is Hidden
-  loadingOverlayView.hide();
+    //Page Loads Overlay is Hidden
+    loadingOverlayView.hide();
 
-  //addingEventHandlers
-  moveListView.addHandlerRenderPosition((plyNum) => {
-    controlPositionRender(gameDataService.extractMoveInfo(plyNum));
-    navBtnView.currentPlyNum = plyNum; //updating current ply num for nav btns to work properly
-  });
-  boardOrientationView.addHandlerChangeBoardOrientation(
-    handlerChangeBoardOrientation,
-  );
-  bestMoveView.addHandlerBestMoveBtn(handlerBestMoveBtn);
-  engineLineView.addHandlerExpandEngineLineBtn();
-  engineLineView.addHandlerEngineLinePlies((lineNum, plyNum) => {
-    console.log(lineNum, plyNum);
-    handlerEngineLinePlies(lineNum, plyNum);
-  });
+    //addingEventHandlers
+    moveListView.addHandlerRenderPosition((plyNum) => {
+      controlPositionRender(gameDataService.extractMoveInfo(plyNum));
+      navBtnView.currentPlyNum = plyNum; //updating current ply num for nav btns to work properly
+      navBtnView.updateNavBtnState();
+    });
+    boardOrientationView.addHandlerChangeBoardOrientation(
+      handlerChangeBoardOrientation,
+    );
+    bestMoveView.addHandlerBestMoveBtn(handlerBestMoveBtn);
+    engineLineView.addHandlerExpandEngineLineBtn();
+    engineLineView.addHandlerEngineLinePlies((lineNum, plyNum) => {
+      handlerEngineLinePlies(lineNum, plyNum);
+    });
 
-  navBtnView.addHandlerNavBtnClick((plyNum) => {
-    console.log(plyNum);
-    controlPositionRender(gameDataService.extractMoveInfo(plyNum));
-  });
+    navBtnView.addHandlerNavBtnClick((plyNum) => {
+      controlPositionRender(gameDataService.extractMoveInfo(plyNum));
+      moveListView.highlightCurrPly(moveListView.allPlies[plyNum]);
+    });
+  } catch (error) {
+    console.error("Game review initialization failed:", error);
+    loadingOverlayView.hide();
+    errorOverlayView.render();
+  }
 
   //rendering engine lines when best move is rendered from best move btn; (task left)
   // 1 eval --> 1.00 fix
-  //make btn work (only play btn logic left and btn disbled logic left)
-  //add logic for book move
   //add logic for miss
   //handle error handling in the case of wrong username
   //handle graph data points hover

@@ -8,6 +8,7 @@ const getBestMoveInfoObj = function (
   currMoveCp,
   currMoveWinPctg,
 ) {
+  if (!bestMove) return null;
   const moveInfoObj = {};
   const chess = new Chess(prevFen);
   const moveObj = chess.move(bestMove);

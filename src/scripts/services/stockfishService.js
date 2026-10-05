@@ -6,11 +6,8 @@ class Stockfish {
 
   constructor() {
     this.#stockfish = new Worker(
-      new URL(
-        "../../assets/stockfishEngineFiles/stockfish-19-lite-single.js",
-        import.meta.url,
-      ), //new URL(url , base , options)
-      { type: "module" },
+      `${import.meta.env.BASE_URL}stockfish/stockfish-19-lite-single.js`,
+      { type: "classic" },
     );
 
     this.#stockfish.postMessage("uci");
@@ -43,8 +40,18 @@ class Stockfish {
   #getPosEngineAnalysis(fen) {
     const posAnalysis = { engineLines: {} };
     return new Promise((resolve, reject) => {
-      this.#stockfish.postMessage(`position fen ${fen}`);
-      this.#stockfish.postMessage(`go depth ${SEARCH_DEPTH}`);
+      let timeoutId;
+
+      const cleanup = () => {
+        clearTimeout(timeoutId);
+        this.#stockfish.onmessage = null;
+        this.#stockfish.onerror = null;
+      };
+
+      timeoutId = setTimeout(() => {
+        cleanup();
+        reject(new Error("Stockfish analysis timed out."));
+      }, 15000);
 
       this.#stockfish.onmessage = (event) => {
         const message = event.data;
@@ -55,14 +62,24 @@ class Stockfish {
 
         if (message.startsWith("bestmove")) {
           //extracting best move
-          posAnalysis.bestMove = message.split(" ")[1];
+          const bestMove = message.split(" ")[1];
+          posAnalysis.bestMove = bestMove === "(none)" ? null : bestMove;
+          cleanup();
           resolve(posAnalysis);
         }
       };
+
+      this.#stockfish.onerror = (error) => {
+        cleanup();
+        reject(new Error("Stockfish worker failed.", { cause: error }));
+      };
+
+      this.#stockfish.postMessage(`position fen ${fen}`);
+      this.#stockfish.postMessage(`go depth ${SEARCH_DEPTH}`);
     });
   }
 
-  async getGameEngineAnalysis() {
+  async getGameEngineAnalysis(handler) {
     console.log("Game Analysis Started");
 
     for (let i = 0; i < gameModel.game.gameMoves.length; i++) {
@@ -70,10 +87,12 @@ class Stockfish {
       const posAnalysis = await this.#getPosEngineAnalysis(move.after);
       gameModel.game.gameMoves[i] = { ...move, posAnalysis };
       console.log("Move Analyzed");
+      const currentAnalysed = Math.floor((i + 1) / 2);
+      const totalMoves = Math.ceil(gameModel.game.gameMoves.length / 2);
+      handler(currentAnalysed, totalMoves);
     }
 
     console.log("Game Analysed");
-    console.log(gameModel.game);
   }
 }
 

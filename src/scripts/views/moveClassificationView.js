@@ -34,6 +34,7 @@ class moveClassificationSection extends View {
       "good",
       "inaccuracy",
       "mistake",
+      "miss",
       "blunder",
     ].forEach((type) => {
       const ele = document.querySelector(`.for-${color}.num-move-${type}`);
