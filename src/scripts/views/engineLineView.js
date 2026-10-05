@@ -12,7 +12,7 @@ class EngineLinesSection extends View {
   }
 
   #generateHtmlStr(lineNum, { plyNum, currPly }) {
-    return `<div class="move-ply data-ply-num=${plyNum} data-line-num = ${lineNum}">${currPly}</div>`;
+    return `<div class="move-ply" data-ply-num=${plyNum} data-line-num = ${lineNum}>${currPly}</div>`;
   }
 
   #updateEngineLine(lineNum, engineLinePliesArr) {
@@ -50,18 +50,39 @@ class EngineLinesSection extends View {
     } else evalLine2.classList.remove("is-negative");
   }
 
-  addHandlerRenderPosition(handler) {
+  // addHandlerRenderPosition(handler) {
+  //   this.#parentElement.addEventListener("click", (event) => {
+  //     const target = event.target.closest(".move-ply");
+  //     //guard clause
+  //     if (!target) return;
+
+  //     this.removeCurrPlyHighlight();
+  //     this.#highlightCurrPly(target);
+
+  //     const plyNum = target.dataset.plyNum;
+  //     const lineNum = target.dataset.lineNum;
+  //     handler(plyNum, lineNum);
+  //   });
+  // }
+
+  addHandlerExpandEngineLineBtn() {
+    this.#parentElement.addEventListener("click", (event) => {
+      const target = event.target.closest(".hide-show-line-svg");
+      if (!target) return;
+      const engineLine = target.closest(".engine-line");
+      engineLine.classList.toggle("is-expanded");
+    });
+  }
+
+  addHandlerEngineLinePlies(handler) {
     this.#parentElement.addEventListener("click", (event) => {
       const target = event.target.closest(".move-ply");
-      //guard clause
       if (!target) return;
 
-      this.removeCurrPlyHighlight();
+      const lineNum = +target.dataset.lineNum;
+      const plyNum = +target.dataset.plyNum;
+      handler(lineNum, plyNum);
       this.#highlightCurrPly(target);
-
-      const plyNum = target.dataset.plyNum;
-      const lineNum = target.dataset.lineNum;
-      handler(plyNum, lineNum);
     });
   }
 

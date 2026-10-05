@@ -4,6 +4,7 @@ import Stockfish from "../services/stockfishService.js";
 import { calculateStats } from "../services/calcStatsService.js";
 import { classifyMoves } from "../services/classifyMovesService.js";
 import { restructureModel } from "../services/restructureModelService.js";
+import { getNumPlies } from "../services/gameDataService.js";
 
 //importing all the views
 import bestMoveView from "../views/bestMoveView.js";
@@ -17,6 +18,7 @@ import gameAccuracyView from "../views/gameAccuracyView.js";
 import loadingOverlayView from "../views/loadingOverlayView.js";
 import moveClassificationView from "../views/moveClassificationView.js";
 import moveListView from "../views/moveListView.js";
+import navBtnView from "../views/navBtnView.js";
 // import navBtnView from "../views/navBtnView.js"
 import playerDescripView from "../views/playerDescripView.js";
 
@@ -92,6 +94,19 @@ const controlUpdateGameStats = function () {
   controlPositionRender(extractMoveInfo(0));
 };
 
+//handler for click on plies in engine line
+const handlerEngineLinePlies = function (lineNum, plyNum) {
+  const movePlyNum = navBtnView.currentPlyNum;
+  console.log(movePlyNum, lineNum, plyNum);
+  const engineLinePlyObj = gameDataService.getEngineLinePly(
+    movePlyNum,
+    lineNum,
+    plyNum,
+  );
+
+  controlPositionRender(engineLinePlyObj);
+};
+
 //handlers for click event on choose handler / analysis btn
 const handlerRenderAnalysis = function () {
   bestMoveView.render();
@@ -154,6 +169,7 @@ const init = async function () {
   classifyMoves();
   restructureModel();
 
+  navBtnView.lastPlyNum = getNumPlies();
   //Updating Game Stats in view
   controlUpdateGameStats();
 
@@ -161,18 +177,28 @@ const init = async function () {
   loadingOverlayView.hide();
 
   //addingEventHandlers
-  moveListView.addHandlerRenderPosition((plyNum) =>
-    controlPositionRender(gameDataService.extractMoveInfo(plyNum)),
-  );
+  moveListView.addHandlerRenderPosition((plyNum) => {
+    controlPositionRender(gameDataService.extractMoveInfo(plyNum));
+    navBtnView.currentPlyNum = plyNum; //updating current ply num for nav btns to work properly
+  });
   boardOrientationView.addHandlerChangeBoardOrientation(
     handlerChangeBoardOrientation,
   );
   bestMoveView.addHandlerBestMoveBtn(handlerBestMoveBtn);
+  engineLineView.addHandlerExpandEngineLineBtn();
+  engineLineView.addHandlerEngineLinePlies((lineNum, plyNum) => {
+    console.log(lineNum, plyNum);
+    handlerEngineLinePlies(lineNum, plyNum);
+  });
+
+  navBtnView.addHandlerNavBtnClick((plyNum) => {
+    console.log(plyNum);
+    controlPositionRender(gameDataService.extractMoveInfo(plyNum));
+  });
+
   //rendering engine lines when best move is rendered from best move btn; (task left)
-  //expanded engine line handler
   // 1 eval --> 1.00 fix
-  //add handler to engine lines plies.
-  //make btn work
+  //make btn work (only play btn logic left and btn disbled logic left)
   //add logic for book move
   //add logic for miss
   //handle error handling in the case of wrong username

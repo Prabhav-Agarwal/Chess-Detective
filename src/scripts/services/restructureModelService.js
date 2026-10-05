@@ -33,6 +33,7 @@ const getEngineLineInfo = function (
   currMoveCp,
   currMoveWinPctg,
 ) {
+  if (!engineLine) return [];
   const movesArr = engineLine.split(" ");
   const chess = new Chess(currFen);
 
@@ -79,7 +80,7 @@ export const restructureModel = function () {
     ["line1", "line2"].forEach((line) => {
       move.posAnalysis.engineLines[line] = getEngineLineInfo(
         move.after,
-        move.posAnalysis.engineLines[line].variation,
+        move.posAnalysis.engineLines[line]?.variation,
         game.centiPawnsArr[line][i],
         game.winPercentagesArr[line][i],
       );

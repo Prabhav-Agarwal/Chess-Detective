@@ -1,4 +1,4 @@
-export const SEARCH_DEPTH = 4;
+export const SEARCH_DEPTH = 16;
 export const INIT_CP = 0;
 export const MATE_CP = 1000;
 export const CP_CLAMP = 1000; // Lichess clamps cp to ±1000 before converting to win%

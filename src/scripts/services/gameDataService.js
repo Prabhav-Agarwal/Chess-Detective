@@ -1,5 +1,7 @@
 import * as gameModel from "../models/gameModel.js";
 
+export const getNumPlies = () => gameModel.game.gameMoves.length - 1;
+
 //info for updating player accuracy section
 export const getPlayerAccuracySectionInfo = function () {
   const { white, black } = gameModel.game.playerAccuracies;
@@ -81,7 +83,7 @@ export const extractMoveInfo = function (index) {
   const moveObj = {};
   const game = gameModel.game;
   const move = game.gameMoves[index];
-  console.log(move, game.gameMoves[index - 1]);
+  console.log(index, move, game.gameMoves[index - 1]);
   moveObj.plyNum = index;
   moveObj.fenAfter = move.after;
   moveObj.classification = move.classification;
@@ -116,4 +118,15 @@ export const getMoveListSectionInfo = function () {
 //function for getting data bestMove object by plyNUm
 export const getBestMoveObj = function (plyNum) {
   return gameModel.game.gameMoves?.[plyNum - 1]?.posAnalysis?.bestMove;
+};
+
+//function for getting object engine line ply
+export const getEngineLinePly = function (
+  movePlyNum,
+  lineNum,
+  engineLinePlyNum,
+) {
+  return gameModel.game.gameMoves?.[movePlyNum]?.posAnalysis?.engineLines?.[
+    `line${lineNum}`
+  ]?.[engineLinePlyNum];
 };
